@@ -12,6 +12,16 @@
  */
 
 import React from 'react';
+import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import Footer from 'components/Footer';
+
+const AppWrapper = styled.div`
+  position: realtive;
+  min-height: 100vh;
+  padding: 0 10px;
+  padding-bottom: 60px;
+`;
 
 export default class App extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -21,9 +31,16 @@ export default class App extends React.PureComponent { // eslint-disable-line re
 
   render() {
     return (
-      <div>
+      <AppWrapper>
+        <Helmet
+          defaultTitle="Book Trader"
+          meta={[
+            { name: 'description', content: 'A Book Trading Application' },
+          ]}
+        />
         {React.Children.toArray(this.props.children)}
-      </div>
+        <Footer />
+      </AppWrapper>
     );
   }
 }

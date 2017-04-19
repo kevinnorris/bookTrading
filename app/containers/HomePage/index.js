@@ -10,13 +10,18 @@
  */
 
 import React from 'react';
+import styled from 'styled-components';
+
+const TopTitle = styled.h1`
+  margin-top: 0;
+`;
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <h1>
+      <TopTitle>
         Home Page
-      </h1>
+      </TopTitle>
     );
   }
 }
