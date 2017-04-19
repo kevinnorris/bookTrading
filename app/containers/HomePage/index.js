@@ -10,18 +10,29 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
-
-const TopTitle = styled.h1`
-  margin-top: 0;
-`;
+import LinkButton from 'components/LinkButton';
+import TitleDisplay from './TitleDisplay';
+import Wrapper from './Wrapper';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <TopTitle>
-        Home Page
-      </TopTitle>
+      <Wrapper>
+        <TitleDisplay>
+          Book Trader
+        </TitleDisplay>
+        <div>
+          <h2>How it works</h2>
+          <ol>
+            <li>Input books you want to give away</li>
+            <li>Receive request from for your books from others</li>
+            <li>Send your books to and receive points</li>
+            <li>Request books with your points</li>
+          </ol>
+        </div>
+        <LinkButton to="/login">Log In</LinkButton>
+        <LinkButton to="/signup">Sign Up</LinkButton>
+      </Wrapper>
     );
   }
 }
