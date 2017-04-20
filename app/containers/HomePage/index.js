@@ -12,12 +12,11 @@
 import React from 'react';
 import LinkButton from 'components/LinkButton';
 import TitleDisplay from './TitleDisplay';
-import Wrapper from './Wrapper';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Wrapper>
+      <div className="container">
         <TitleDisplay>
           Book Trader
         </TitleDisplay>
@@ -32,7 +31,8 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
         </div>
         <LinkButton to="/login">Log In</LinkButton>
         <LinkButton to="/signup">Sign Up</LinkButton>
-      </Wrapper>
+        <LinkButton to="/brows">Brows Books</LinkButton>
+      </div>
     );
   }
 }
