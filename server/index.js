@@ -1,8 +1,12 @@
 /* eslint consistent-return:0 */
+/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }]*/
 require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const logger = require('./logger');
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -11,10 +15,58 @@ const isDev = process.env.NODE_ENV !== 'production';
 const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngrok') : false;
 const resolve = require('path').resolve;
 const api = require('./api');
+require('./passportConfig')(passport);
+
 const app = express();
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI);
+
+// add body parsing
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+// add passport.js
+app.use(passport.initialize());
+
+/*
+  Local authentication
+  ------------------------
+*/
+
+// Builds the json to be sent back as response, either errors or token
+const parsePassport = (user, info) => {
+  // if user does not exist
+  if (!user) {
+    return { success: false, error: info.message };
+  }
+  const token = jwt.sign({
+    sub: user._id,
+    iss: process.env.APP_URL,
+    iat: (new Date().getTime()),
+  }, process.env.JWT_SECRET, {
+    expiresIn: '4h',
+  });
+
+  return { success: true, token, user: user._id };
+};
+
+app.route('/auth/signup')
+  .post((req, res, next) => {
+    passport.authenticate('local-signup', (err, user, info) => {
+      if (err) return next(err);
+      return res.json(parsePassport(user, info));
+    })(req, res, next);
+  });
+
+app.route('/auth/login')
+  .post((req, res, next) => {
+    passport.authenticate('local-login', (err, user, info) => {
+      if (err) return next(err);
+
+      return res.json(parsePassport(user, info));
+    })(req, res, next);
+  });
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 app.use('/api', api);
