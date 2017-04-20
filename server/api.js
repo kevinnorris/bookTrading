@@ -1,6 +1,8 @@
 const express = require('express');
 const fetch = require('node-fetch');
 
+const User = require('./models/users');
+
 const searchUrl = (searchTerms, startIndex = 0) => (
   `https://www.googleapis.com/books/v1/volumes?q=javascript&startIndex=${startIndex}&fields=items(id%2CvolumeInfo(authors%2CaverageRating%2Ccategories%2Cdescription%2CimageLinks%2Fthumbnail%2Clanguage%2CpageCount%2CpreviewLink%2CratingsCount%2Ctitle))&key=${process.env.GOOGLE_BOOKS_API_KEY}`
 );
@@ -50,6 +52,28 @@ apiRoutes.get('/search', (req, res) => {
       res.json({ success: true, data: formatData(json) });
     }).catch((err) => res.json({ success: false, error: err.message }));
   }
+});
+
+// Debugging routes
+
+apiRoutes.get('/users', (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) {
+      res.json({ success: false, error: err.message });
+    } else {
+      res.json({ success: true, users });
+    }
+  });
+});
+
+apiRoutes.get('/deleteUsers', (req, res) => {
+  User.remove({}, (err) => {
+    if (err) {
+      res.json({ success: false, error: err.message });
+    } else {
+      res.json({ success: true });
+    }
+  });
 });
 
 module.exports = apiRoutes;
