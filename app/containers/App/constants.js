@@ -10,3 +10,9 @@
  */
 
 export const DEFAULT_LOCALE = 'en';
+
+export const AUTHENTICATE_USER = 'bookTrading/App/AUTHENTICATE_USER';
+export const AUTHENTICATE_USER_SUCCESS = 'bookTrading/App/AUTHENTICATE_USER_SUCCESS';
+export const AUTHENTICATE_USER_ERROR = 'bookTrading/App/AUTHENTICATE_USER_ERROR';
+
+export const LOGOUT_USER = 'bookTrading/App/LOGOUT_USER';
