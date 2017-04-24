@@ -20,7 +20,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
         <TitleDisplay>
           Book Trader
         </TitleDisplay>
-        <div>
+        <div className={'center-block'}>
           <h2>How it works</h2>
           <ol>
             <li>Input books you want to give away</li>
