@@ -5,15 +5,10 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import CenterCard from 'components/CenterCard';
 import Title from 'components/Title';
+import ServerError from 'components/ServerError';
 
 const MarginFormControl = styled(FormControl)`
   margin-bottom: 15px;
-`;
-
-const ServerError = styled.p`
-  color: red;
-  font-size: 1.5rem;
-  font-weight: bold;
 `;
 
 export default class LoginCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function

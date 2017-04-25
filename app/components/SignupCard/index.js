@@ -5,6 +5,7 @@ import * as val from 'utils/fieldValidation';
 import TextField from 'components/TextField';
 import Title from 'components/Title';
 import CenterCard from 'components/CenterCard';
+import ServerError from 'components/ServerError';
 import { restrictedPasswords } from 'utils/constants';
 
 const fieldValidations = [
@@ -120,7 +121,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
           />
           <p>* required fields</p>
         </form>
-        {this.props.error ? <h4 className="SignupCard-servError">{this.props.error}</h4> : ''}
+        {this.props.error ? <ServerError>{this.props.error}</ServerError> : ''}
         <Button onClick={this.handleSubmitClicked}>Submit</Button>
       </CenterCard>
     );
