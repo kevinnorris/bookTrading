@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import LinkButton from 'components/LinkButton';
 import * as colors from 'utils/colors';
-import Title from './Title';
+import Title from 'components/Title';
 
 const Wrapper = styled.div`
   border: ${colors.primaryDark} 2px solid;

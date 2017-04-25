@@ -11,7 +11,7 @@
 
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import Title from './Title';
+import Title from 'components/Title';
 import Header from './Header';
 import StepBox from './StepBox';
 import NavBox from './NavBox';
