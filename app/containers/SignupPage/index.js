@@ -1,9 +1,3 @@
-/*
- *
- * SignupPage
- *
- */
-
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -21,7 +15,7 @@ export class SignupPage extends React.PureComponent { // eslint-disable-line rea
             { name: 'description', content: 'Signup Page of Book Trader application' },
           ]}
         />
-        <Header />
+        <Header location={this.props.location.pathname} />
         <div className="container">
           <SignupCard signup={() => { console.log('signup'); }} />
         </div>
@@ -32,6 +26,7 @@ export class SignupPage extends React.PureComponent { // eslint-disable-line rea
 
 SignupPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  location: PropTypes.object,
 };
 
 

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import * as colors from 'utils/colors';
 
 const Wrapper = styled.div`
-  background: lightblue;
+  background: ${colors.primary};
   width: 100%;
   display: flex;
   align-items: center;

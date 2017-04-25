@@ -21,7 +21,7 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
             { name: 'description', content: 'Login Page of Book Trader application' },
           ]}
         />
-        <Header />
+        <Header location={this.props.location.pathname} />
         <div className="container">
           <LoginCard login={() => { console.log('loging in'); }} />
         </div>
@@ -32,6 +32,7 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 
 LoginPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  location: PropTypes.object,
 };
 
 

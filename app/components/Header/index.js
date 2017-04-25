@@ -1,39 +1,31 @@
-/**
-*
-* Header
-*
-*/
-
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router';
 
+import HeaderLink from 'components/HeaderLink';
 import Wrapper from './Wrapper';
+import Logo from './Logo';
+import Icon from './Icon';
 import Controls from './Controls';
 
-const Logo = styled(Link)`
-  color: darkblue;
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
-`;
 
-function Header() {
+function Header({ location }) {
+  console.log(location);
   return (
     <Wrapper>
-      <Logo to="/">Book Trader</Logo>
+      <Logo to="/">
+        <Icon className="glyphicon glyphicon-book" aria-hidden="true"></Icon>
+        Book Trader
+      </Logo>
       <Controls>
-        <Link to="/login">Log In</Link>
-        |
-        <Link to="/signup">Sign Up</Link>
+        <HeaderLink to="/login">Log In</HeaderLink>
+        <HeaderLink to="/signup">Sign Up</HeaderLink>
       </Controls>
     </Wrapper>
   );
 }
 
 Header.propTypes = {
-
+  location: React.PropTypes.string.isRequired,
 };
 
 export default Header;

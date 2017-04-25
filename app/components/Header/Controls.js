@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: inline-block;
-  width: 120px;
+  width: 150px;
   display: flex;
   justify-content: space-around;
 `;
