@@ -76,7 +76,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
 
   render() {
     return (
-      <CenterCard zLevel={1} className={'center-block text-center'}>
+      <CenterCard zLevel={1}>
         <Title className="SignupCard-title">Signup</Title>
         <form className={'text-left'} onSubmit={this.handelSubmit}>
           <TextField
