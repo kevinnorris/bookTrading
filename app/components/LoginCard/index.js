@@ -1,8 +1,20 @@
 import React from 'react';
-import { Button, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+import styled from 'styled-components';
 
-import Card from '../../components/Card';
+import Button from 'components/Button';
+import CenterCard from 'components/CenterCard';
+import Title from 'components/Title';
 
+const MarginFormControl = styled(FormControl)`
+  margin-bottom: 15px;
+`;
+
+const ServerError = styled.p`
+  color: red;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
 
 export default class LoginCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -29,22 +41,18 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
     };
   }
 
-  handleSubmitClicked = () => {
-    this.props.login(this.state.email, this.state.password);
-  }
-
   handelSubmit = (e) => {
     console.log('form submited');
     e.preventDefault();
-    // this.handleSubmitClicked();
+    // this.props.login(this.state.email, this.state.password);
   }
 
   render() {
     return (
-      <Card className="LoginCard">
-        <h1 className="LoginCard-title">Login</h1>
+      <CenterCard className="LoginCard">
+        <Title className="LoginCard-title">Login</Title>
         <form onSubmit={this.handelSubmit}>
-          <FormControl
+          <MarginFormControl
             className="LoginCard-input"
             name="email"
             type="text"
@@ -60,10 +68,10 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
             value={this.state.password}
             onChange={this.handelInputChange('password')}
           />
+          {this.props.error ? <ServerError>{this.props.error}</ServerError> : ''}
+          <Button type="submit">Submit</Button>
         </form>
-        {this.props.error ? <h4 className="LoginCard-servError">{this.props.error}</h4> : ''}
-        <Button className="LoginCard-input" onClick={this.handleSubmitClicked}>Submit</Button>
-      </Card>
+      </CenterCard>
     );
   }
 }
