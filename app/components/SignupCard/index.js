@@ -1,13 +1,7 @@
-/**
-*
-* SignupCard
-*
-*/
-
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
 import Card from 'components/Card';
+import Button from 'components/Button';
 import * as val from 'utils/fieldValidation';
 import TextField from 'components/TextField';
 import { restrictedPasswords } from 'utils/constants';
@@ -19,9 +13,10 @@ const SmallCard = styled(Card)`
 `;
 
 const fieldValidations = [
-  val.ruleRunner('email', 'Email Address', val.required, val.mustContain('@')),
+  val.ruleRunner('username', 'User Name', val.required, val.cantContain([' '])),
+  val.ruleRunner('email', 'Email', val.mustContain('@')),
   val.ruleRunner('password1', 'Password', val.required, val.minLength(6),
-                val.cantContain(restrictedPasswords, ['email'])),
+                val.cantContain(restrictedPasswords, ['email', 'username'])),
   val.ruleRunner('password2', 'Password Confirmation', val.mustMatch('password1', 'Password')),
 ];
 
@@ -37,6 +32,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
   }
 
   state = {
+    username: '',
     email: '',
     password1: '',
     password2: '',
@@ -89,7 +85,18 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
         <h1 className="SignupCard-title">Signup</h1>
         <form onSubmit={this.handelSubmit}>
           <TextField
+            name="username"
+            label="User Name *"
+            placeHolder="User Name"
+            showError={this.state.showErrors}
+            text={this.state.username}
+            isPassword={false}
+            onFieldChange={this.handelInputChange('username')}
+            errorText={this.errorFor('username')}
+          />
+          <TextField
             name="email"
+            label="Email Address"
             placeHolder="Email address"
             showError={this.state.showErrors}
             text={this.state.email}
@@ -99,6 +106,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
           />
           <TextField
             name="password1"
+            label="Password *"
             placeHolder="Password"
             showError={this.state.showErrors}
             text={this.state.password1}
@@ -116,6 +124,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
             errorText={this.errorFor('password2')}
           />
         </form>
+        <p>* required fields</p>
         {this.props.error ? <h4 className="SignupCard-servError">{this.props.error}</h4> : ''}
         <Button onClick={this.handleSubmitClicked}>Submit</Button>
       </SmallCard>

@@ -1,15 +1,12 @@
 import styled from 'styled-components';
+import { primaryDark } from 'utils/colors';
 
 const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border: ${primaryDark} 2px solid;
+  border-radius: 5px;
+  padding: 12.5px;
   overflow: hidden;
   position: relative;
-  border-radius: 8px;
-  margin-bottom: 25px;
-  background: white;
-  padding: 12.5px;
   box-shadow: ${
     (props) => {
       if (props.zLevel) {

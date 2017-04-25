@@ -1,9 +1,10 @@
 // npm packages
 import React from 'react';
-import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
 
-const TextField = ({ name, placeHolder, showError, text, onFieldChange, errorText, isPassword }) => (
+const TextField = ({ name, label, placeHolder, showError, text, onFieldChange, errorText, isPassword }) => (
   <FormGroup controlId={name} validationState={showError && errorText !== '' ? 'error' : null}>
+    {label ? <ControlLabel>{label}</ControlLabel> : null}
     <FormControl
       name={name}
       type={isPassword ? 'password' : 'text'}
@@ -18,6 +19,7 @@ const TextField = ({ name, placeHolder, showError, text, onFieldChange, errorTex
 
 TextField.propTypes = {
   name: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string,
   placeHolder: React.PropTypes.string.isRequired,
   showError: React.PropTypes.bool.isRequired,
   text: React.PropTypes.string.isRequired,

@@ -46,7 +46,7 @@ const minLengthErr = (length) => (
 );
 
 const cantContainErr = (restricted) => (
-  (fieldName) => `${fieldName} must not contain ${restricted}, case insensitive`
+  (fieldName) => `${fieldName} must not contain "${restricted}", case insensitive`
 );
 
 const mustContainErr = (require) => (
@@ -93,7 +93,7 @@ export const cantContain = (restricted, fieldNames = null) => (
       // return error if text contains contents of one of the passed fieldNames
       for (i = 0; i < fieldNames.length; i += 1) {
         const fieldVal = state[fieldNames[i]].toLowerCase();
-        if (text.toLowerCase().includes(fieldVal)) {
+        if (fieldVal !== '' && text.toLowerCase().includes(fieldVal)) {
           return cantContainErr(fieldVal);
         }
       }
@@ -110,7 +110,10 @@ export const cantContain = (restricted, fieldNames = null) => (
 );
 
 export const mustContain = (require) => (
-  (text) => (
-    text.includes(require) ? null : mustContainErr(require)
-  )
+  (text) => {
+    if (text.length > 0) {
+      return text.includes(require) ? null : mustContainErr(require);
+    }
+    return null;
+  }
 );

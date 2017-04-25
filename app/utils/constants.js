@@ -2,7 +2,9 @@
 // Very common passwords, and passwords based on app name
 // Should be extended to at least top 1k common passwords in non demo apps
 export const restrictedPasswords = [
-  'barsvp',
+  'booktrader',
+  'book',
+  'trade',
   '123456',
   'password',
   '12345678',
