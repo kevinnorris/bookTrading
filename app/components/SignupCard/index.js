@@ -1,18 +1,11 @@
 import React from 'react';
 
-import Card from 'components/Card';
 import Button from 'components/Button';
 import * as val from 'utils/fieldValidation';
 import TextField from 'components/TextField';
 import Title from 'components/Title';
+import CenterCard from 'components/CenterCard';
 import { restrictedPasswords } from 'utils/constants';
-
-import styled from 'styled-components';
-
-const SmallCard = styled(Card)`
-  width: 33%;
-  min-width: 300px;
-`;
 
 const fieldValidations = [
   val.ruleRunner('username', 'User Name', val.required, val.cantContain([' '])),
@@ -83,7 +76,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
 
   render() {
     return (
-      <SmallCard zLevel={1} className={'center-block text-center'}>
+      <CenterCard zLevel={1} className={'center-block text-center'}>
         <Title className="SignupCard-title">Signup</Title>
         <form className={'text-left'} onSubmit={this.handelSubmit}>
           <TextField
@@ -129,7 +122,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
         </form>
         {this.props.error ? <h4 className="SignupCard-servError">{this.props.error}</h4> : ''}
         <Button onClick={this.handleSubmitClicked}>Submit</Button>
-      </SmallCard>
+      </CenterCard>
     );
   }
 }
