@@ -10,13 +10,23 @@
  */
 
 import React from 'react';
+import Header from 'components/Header';
 
 export default class NotFound extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <h1>
-        Page Not Found
-      </h1>
+      <div>
+        <Header location={this.props.location.pathname} />
+        <div className="container">
+          <h1 className="text-center">
+            Page Not Found
+          </h1>
+        </div>
+      </div>
     );
   }
 }
+
+NotFound.propTypes = {
+  location: React.PropTypes.object,
+};
