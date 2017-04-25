@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import Footer from 'components/Footer';
 
 const AppWrapper = styled.div`
-  position: realtive;
+  position: relative;
   min-height: 100vh;
   padding-bottom: 60px;
 `;

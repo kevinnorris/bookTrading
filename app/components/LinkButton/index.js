@@ -1,8 +1,12 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
 
+import * as colors from 'utils/colors';
+
 export default styled(Link)`
   display: inline-flex;
+  background: ${colors.actionColor};
+  color: white;
   padding: 0.25em 2em;
   margin: 1em;
   text-decoration: none;
@@ -15,11 +19,10 @@ export default styled(Link)`
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
-  border: 2px solid #41ADDD;
-  color: #41ADDD;
   
-  &:active {
-    background: #41ADDD;
-    color: #FFF;
+  &:hover {
+    background: ${colors.actionHover};
+    color: white;
+    text-decoration: none;
   }
 `;

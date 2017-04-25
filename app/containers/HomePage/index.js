@@ -10,27 +10,34 @@
  */
 
 import React from 'react';
-import LinkButton from 'components/LinkButton';
+import { Row, Col } from 'react-bootstrap';
+import Title from './Title';
 import Header from './Header';
+import StepBox from './StepBox';
+import NavBox from './NavBox';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
         <Header />
-        <div className="container">
-          <div className={'center-block'}>
-            <h2>How it works</h2>
-            <ol>
-              <li>Input books you want to give away</li>
-              <li>Receive request from for your books from others</li>
-              <li>Send your books to and receive points</li>
-              <li>Request books with your points</li>
-            </ol>
-          </div>
-          <LinkButton to="/login">Log In</LinkButton>
-          <LinkButton to="/signup">Sign Up</LinkButton>
-          <LinkButton to="/brows">Brows Books</LinkButton>
+        <div className="container text-center">
+          <Title>How It Works</Title>
+          <Row>
+            <Col sm={4} md={3}>
+              <StepBox num={1} icon={'book'} text={'Input books you want to give away'} />
+            </Col>
+            <Col sm={4} md={3}>
+              <StepBox num={2} icon={'envelope'} text={'Receive requests for your books'} />
+            </Col>
+            <Col sm={4} md={3}>
+              <StepBox num={3} icon={'send'} text={'Send your books and receive points'} />
+            </Col>
+            <Col sm={4} smOffset={4} md={3} mdOffset={0}>
+              <StepBox num={4} icon={'pencil'} text={'Request books with your points'} />
+            </Col>
+          </Row>
+          <NavBox />
         </div>
       </div>
     );

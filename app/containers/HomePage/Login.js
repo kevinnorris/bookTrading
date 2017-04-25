@@ -72,7 +72,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
             bsSize="sm"
             name="password"
             type="password"
-            placeholder="Password"
+            placeholder="password"
             value={this.state.password}
             onChange={this.handelInputChange('password')}
           />

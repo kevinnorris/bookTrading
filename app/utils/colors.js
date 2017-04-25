@@ -6,6 +6,7 @@ export const primaryDarker = '#382110';
 export const darkerHover = '#58371F';
 
 export const actionColor = '#409D69';
+export const actionHover = '#3d9363';
 
 export const linkColor = '#00635d';
 
