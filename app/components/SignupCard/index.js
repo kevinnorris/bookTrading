@@ -4,7 +4,9 @@ import Card from 'components/Card';
 import Button from 'components/Button';
 import * as val from 'utils/fieldValidation';
 import TextField from 'components/TextField';
+import Title from 'components/Title';
 import { restrictedPasswords } from 'utils/constants';
+
 import styled from 'styled-components';
 
 const SmallCard = styled(Card)`
@@ -81,9 +83,9 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
 
   render() {
     return (
-      <SmallCard zLevel={1} className={'center-block'}>
-        <h1 className="SignupCard-title">Signup</h1>
-        <form onSubmit={this.handelSubmit}>
+      <SmallCard zLevel={1} className={'center-block text-center'}>
+        <Title className="SignupCard-title">Signup</Title>
+        <form className={'text-left'} onSubmit={this.handelSubmit}>
           <TextField
             name="username"
             label="User Name *"
@@ -123,8 +125,8 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
             onFieldChange={this.handelInputChange('password2')}
             errorText={this.errorFor('password2')}
           />
+          <p>* required fields</p>
         </form>
-        <p>* required fields</p>
         {this.props.error ? <h4 className="SignupCard-servError">{this.props.error}</h4> : ''}
         <Button onClick={this.handleSubmitClicked}>Submit</Button>
       </SmallCard>
