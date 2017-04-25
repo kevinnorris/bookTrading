@@ -1,22 +1,14 @@
 import React from 'react';
-import { Button, Form, FormControl } from 'react-bootstrap';
+import { Form, FormControl } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import * as colors from 'utils/colors';
+import HeaderButton from 'components/HeaderButton';
 
 const LoginInput = styled(FormControl)`
   margin-right: 4px;
   display: inline-block;
   width: auto;
   vertical-align: middle;
-`;
-const LoginButton = styled(Button)`
-  background: ${colors.primaryDarker};
-  color: white;
-  &:hover{
-    background: ${colors.darkerHover};
-    color: white;
-  }
 `;
 
 const Wrapper = styled.div`
@@ -76,7 +68,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
             value={this.state.password}
             onChange={this.handelInputChange('password')}
           />
-          <LoginButton type={'submit'}>Login</LoginButton>
+          <HeaderButton type={'submit'}>Login</HeaderButton>
         </Form>
         {this.props.error ? <span>{this.props.error}</span> : null}
       </Wrapper>

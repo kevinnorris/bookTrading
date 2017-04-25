@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router';
 
 import * as colors from 'utils/colors';
+import Logo from 'components/Header/Logo';
+import Icon from 'components/Header/Icon';
 import Login from './Login';
 
 const Wrapper = styled.div`
@@ -18,24 +19,6 @@ const Wrapper = styled.div`
     flex-direction: row;
     justify-content: space-around;
   }
-`;
-
-const Logo = styled(Link)`
-  color: ${colors.primaryDarker};
-  margin: 0;
-  font-size: 3rem;
-  font-weight: bold;
-  text-decoration: none;
-
-  &:hover{
-    text-decoration: none;
-    color: ${colors.primaryDarker};
-  }
-`;
-
-const Icon = styled.span`
-  padding-right: 4px;
-  font-size: 2.5rem;
 `;
 
 function Header() {
