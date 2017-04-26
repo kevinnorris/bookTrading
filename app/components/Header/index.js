@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 import HeaderLink from 'components/HeaderLink';
 import Wrapper from './Wrapper';
@@ -17,8 +16,8 @@ function Header({ location }) {
         Book Trader
       </Logo>
       <Controls>
-        <HeaderLink to="/login">Log In</HeaderLink>
-        <HeaderLink to="/signup">Sign Up</HeaderLink>
+        {location !== '/login' ? <HeaderLink to="/login">Log In</HeaderLink> : null}
+        {location !== '/signup' ? <HeaderLink to="/signup">Sign Up</HeaderLink> : null}
       </Controls>
     </Wrapper>
   );
