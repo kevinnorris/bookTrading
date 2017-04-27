@@ -32,3 +32,5 @@ export const restrictedPasswords = [
   'starwars',
   'default',
 ];
+
+export const appUrl = location.origin;
