@@ -1,3 +1,4 @@
+import { push } from 'react-router-redux';
 import { take, call, put, race, takeLatest } from 'redux-saga/effects';
 import {
   AUTHENTICATE_USER,
@@ -22,6 +23,7 @@ export function* login(action) {
   if (winner.auth) {
     yield put({ type: AUTHENTICATE_USER_SUCCESS, payload: winner.auth });
     // Go to dashboard
+    yield put(push('/dashboard'));
   }
 }
 
@@ -38,12 +40,14 @@ export function* signup(action) {
   if (winner.auth) {
     yield put({ type: AUTHENTICATE_USER_SUCCESS, payload: winner.auth });
     // Go to dashboard
+    yield put(push('/dashboard'));
   }
 }
 
 export function* logout() {
   call(auth.logout);
   // Go to landing page
+  yield put(push('/'));
 }
 
 /**
