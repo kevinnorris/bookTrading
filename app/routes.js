@@ -15,13 +15,14 @@ const loadModule = (cb) => (componentModule) => {
 
 export default function createRoutes(store) {
   // Create reusable async injectors using getAsyncInjectors factory
-  const { injectReducer, injectSagas } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
+  const { injectReducer, injectSagas, redirectToDashboard, redirectToHome } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
   // Inject global saga, not tied to any routes
   injectSagas(authWatcher);
 
   return [
     {
+      onEnter: redirectToDashboard,
       path: '/',
       name: 'home',
       getComponent(nextState, cb) {
