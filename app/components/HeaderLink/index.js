@@ -8,7 +8,7 @@ const HeaderLink = styled(Link)`
   padding: 6px 12px;
   border-radius: 4px;
 
-  &:hover{
+  &:hover, &:active, &:focus{
     background: ${darkerHover};
     color: white;
     text-decoration: none;

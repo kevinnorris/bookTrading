@@ -19,7 +19,7 @@ export default styled.button`
   font-weight: bold;
   font-size: 16px;
   
-  &:hover {
+  &:hover, &:active, &:focus{
     background: ${colors.actionHover};
     color: white;
     text-decoration: none;
