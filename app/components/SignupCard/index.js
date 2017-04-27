@@ -20,7 +20,10 @@ const fieldValidations = [
 class SignupCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     signup: React.PropTypes.func.isRequired,
-    error: React.PropTypes.string,
+    error: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.bool,
+    ]),
   }
 
   static defaultProps = {
@@ -34,6 +37,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
     password2: '',
     showErrors: false,
     validationErrors: {
+      username: '',
       email: '',
       password1: '',
       password2: '',
@@ -60,10 +64,6 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
 
   handelSubmit = (e) => {
     e.preventDefault();
-    this.handleSubmitClicked();
-  }
-
-  handleSubmitClicked = () => {
     this.setState({
       ...this.state,
       showErrors: true,
@@ -71,7 +71,8 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
     // Check if validationErrors is empty
     if (Object.getOwnPropertyNames(this.state.validationErrors).length === 0) {
       // send to server
-      this.props.signup(this.state.email, this.state.password1);
+      console.log('signupCard, calling signup');
+      this.props.signup({ username: this.state.username, email: this.state.email, password: this.state.password1 });
     }
   }
 
@@ -120,9 +121,11 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
             errorText={this.errorFor('password2')}
           />
           <p>* required fields</p>
+          <div className="text-center">
+            {this.props.error ? <ServerError>{this.props.error}</ServerError> : ''}
+            <Button type="submit">Submit</Button>
+          </div>
         </form>
-        {this.props.error ? <ServerError>{this.props.error}</ServerError> : ''}
-        <Button onClick={this.handleSubmitClicked}>Submit</Button>
       </CenterCard>
     );
   }
