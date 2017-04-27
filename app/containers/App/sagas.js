@@ -45,7 +45,7 @@ export function* signup(action) {
 }
 
 export function* logout() {
-  call(auth.logout);
+  yield call(auth.logout);
   // Go to landing page
   yield put(push('/'));
 }

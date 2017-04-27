@@ -62,11 +62,15 @@ export function logout() {
   localStorage.removeItem(localStorageString);
 }
 
- /**
-  * Checks if a user is logged in
-  */
+/**
+ * Check if a user is logged in
+ * Returns false or the users cookie
+ */
 export function loggedIn() {
-  const cookie = localStorage.getItem(localStorageString);
+  const cookie = JSON.parse(localStorage.getItem(localStorageString));
   // If a cookie is stored and it has not yet expired
-  return cookie && Date.now() < cookie.expireDate;
+  if (cookie && Date.now() < new Date(cookie.expireDate)) {
+    return cookie;
+  }
+  return false;
 }
