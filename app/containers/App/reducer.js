@@ -39,14 +39,14 @@ function appReducer(state = initialState, action) {
     case AUTHENTICATE_USER_SUCCESS:
       return state
         .set('authenticating', false)
-        .set('token', action.token)
-        .setIn(['userData', 'username'], action.user.username)
-        .setIn(['userData', 'email'], action.user.email)
-        .setIn(['userData', 'points'], action.user.points)
-        .setIn(['userData', 'name'], action.user.name)
-        .setIn(['userData', 'city'], action.user.city)
-        .setIn(['userData', 'state'], action.user.state)
-        .setIn(['userData', 'country'], action.user.country);
+        .set('token', action.payload.token)
+        .setIn(['userData', 'username'], action.payload.user.username)
+        .setIn(['userData', 'email'], action.payload.user.email)
+        .setIn(['userData', 'points'], action.payload.user.points)
+        .setIn(['userData', 'name'], action.payload.user.name)
+        .setIn(['userData', 'city'], action.payload.user.city)
+        .setIn(['userData', 'state'], action.payload.user.state)
+        .setIn(['userData', 'country'], action.payload.user.country);
     case AUTHENTICATE_USER_ERROR:
       return state
         .set('authenticating', false)
