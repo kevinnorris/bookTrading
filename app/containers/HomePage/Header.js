@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import * as colors from 'utils/colors';
-import Logo from 'components/Header/Logo';
-import Icon from 'components/Header/Icon';
+import Logo from 'containers/Header/Logo';
+import Icon from 'containers/Header/Icon';
 import Login from './Login';
 
 const Wrapper = styled.div`
