@@ -25,11 +25,11 @@ module.exports = (passport) => {
     // If email already used by a user
       User.findOne({ username: username }, (err, user) => {
         if (err) {
-          return done(err);
+          return done(null, false, { message: err.message, status: 500 });
         }
         // Can't have two users with same username
         if (user) {
-          return done(null, false, { message: 'Username already in use.' });
+          return done(null, false, { message: 'Username already in use.', status: 400 });
         }
         // if new username, create new user
         const newUser = new User();
@@ -41,6 +41,7 @@ module.exports = (passport) => {
         newUser.city = req.body.city;
         newUser.state = req.body.state;
         newUser.country = req.body.country;
+        newUser.points = 0;
 
         newUser.save((e) => {
           if (e) throw e;
@@ -57,11 +58,11 @@ module.exports = (passport) => {
         if (err) return done(err);
 
         if (!user) {
-          return done(null, false, { message: 'User does not exist' });
+          return done(null, false, { message: 'User does not exist', status: 400 });
         }
 
         if (!user.validPassword(password)) {
-          return done(null, false, { message: 'Password is incorrect' });
+          return done(null, false, { message: 'Password is incorrect', status: 400 });
         }
 
         return done(null, user);

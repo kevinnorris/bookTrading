@@ -38,7 +38,7 @@ app.use(passport.initialize());
 const parsePassport = (user, info) => {
   // if user does not exist
   if (!user) {
-    return { success: false, error: info.message };
+    return { success: false, error: info.message, status: info.status };
   }
   const token = jwt.sign({
     sub: user._id,
@@ -48,7 +48,7 @@ const parsePassport = (user, info) => {
     expiresIn: '4h',
   });
 
-  return { success: true, token, user: user._id };
+  return { success: true, token, user, expiresIn: 14400000 };
 };
 
 app.route('/auth/signup')
