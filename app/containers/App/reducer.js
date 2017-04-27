@@ -54,13 +54,13 @@ function appReducer(state = initialState, action) {
     case LOGOUT_USER:
       return state
         .set('token', false)
-        .setIn(['userData', 'username'], action.user.username)
-        .setIn(['userData', 'email'], action.user.email)
-        .setIn(['userData', 'points'], action.user.points)
-        .setIn(['userData', 'name'], action.user.name)
-        .setIn(['userData', 'city'], action.user.city)
-        .setIn(['userData', 'state'], action.user.state)
-        .setIn(['userData', 'country'], action.user.country);
+        .setIn(['userData', 'username'], false)
+        .setIn(['userData', 'email'], false)
+        .setIn(['userData', 'points'], false)
+        .setIn(['userData', 'name'], false)
+        .setIn(['userData', 'city'], false)
+        .setIn(['userData', 'state'], false)
+        .setIn(['userData', 'country'], false);
     default:
       return state;
   }
