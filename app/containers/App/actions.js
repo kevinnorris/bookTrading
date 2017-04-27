@@ -14,7 +14,6 @@ export function loginRequest(payload) {
 }
 
 export function signupRequest(payload) {
-  console.log('signupRequest action called');
   return {
     type: AUTHENTICATE_USER,
     payload,

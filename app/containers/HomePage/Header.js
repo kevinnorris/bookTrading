@@ -21,20 +21,24 @@ const Wrapper = styled.div`
   }
 `;
 
-function Header() {
+function Header({ login, error }) {
   return (
     <Wrapper>
       <Logo to="/">
         <Icon className="glyphicon glyphicon-book" aria-hidden="true"></Icon>
         Book Trader
       </Logo>
-      <Login login={(username, pass) => console.log(`login called with username: ${username} and pass: ${pass}`)} />
+      <Login login={login} error={error} />
     </Wrapper>
   );
 }
 
 Header.propTypes = {
-
+  login: React.PropTypes.func.isRequired,
+  error: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.bool,
+  ]),
 };
 
 export default Header;

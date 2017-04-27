@@ -71,7 +71,6 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
     // Check if validationErrors is empty
     if (Object.getOwnPropertyNames(this.state.validationErrors).length === 0) {
       // send to server
-      console.log('signupCard, calling signup');
       this.props.signup({ username: this.state.username, email: this.state.email, password: this.state.password1 });
     }
   }

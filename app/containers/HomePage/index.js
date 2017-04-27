@@ -9,18 +9,23 @@
  * the linting exception.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { Row, Col } from 'react-bootstrap';
+
+import { loginRequest } from 'containers/App/actions';
+import { makeSelectError } from 'containers/App/selectors';
 import Title from 'components/Title';
 import Header from './Header';
 import StepBox from './StepBox';
 import NavBox from './NavBox';
 
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        <Header />
+        <Header login={this.props.login} error={this.props.error} />
         <div className="container text-center">
           <Title>How It Works</Title>
           <Row>
@@ -43,3 +48,23 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
     );
   }
 }
+
+HomePage.propTypes = {
+  login: PropTypes.func.isRequired,
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+};
+
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectError(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    login: (payload) => dispatch(loginRequest(payload)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

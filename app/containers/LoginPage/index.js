@@ -1,13 +1,10 @@
-/*
- *
- * LoginPage
- *
- */
-
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { createStructuredSelector } from 'reselect';
 
+import { loginRequest } from 'containers/App/actions';
+import { makeSelectError } from 'containers/App/selectors';
 import Header from 'components/Header';
 import LoginCard from 'components/LoginCard';
 
@@ -23,7 +20,7 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
         />
         <Header location={this.props.location.pathname} />
         <div className="container">
-          <LoginCard login={() => { console.log('loging in'); }} />
+          <LoginCard login={this.props.login} error={this.props.error} />
         </div>
       </div>
     );
@@ -31,15 +28,22 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 }
 
 LoginPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   location: PropTypes.object,
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
 };
 
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectError(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    login: (payload) => dispatch(loginRequest(payload)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

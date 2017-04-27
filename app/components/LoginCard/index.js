@@ -13,7 +13,10 @@ const MarginFormControl = styled(FormControl)`
 
 export default class LoginCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
-    error: React.PropTypes.string,
+    error: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.bool,
+    ]),
     login: React.PropTypes.func.isRequired,
   }
 
@@ -22,7 +25,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
   }
 
   state = {
-    email: '',
+    username: '',
     password: '',
   }
 
@@ -37,9 +40,8 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
   }
 
   handelSubmit = (e) => {
-    console.log('form submited');
     e.preventDefault();
-    // this.props.login(this.state.email, this.state.password);
+    this.props.login({ username: this.state.username, password: this.state.password });
   }
 
   render() {
@@ -49,11 +51,11 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
         <form onSubmit={this.handelSubmit}>
           <MarginFormControl
             className="LoginCard-input"
-            name="email"
+            name="username"
             type="text"
-            placeholder="Email address"
-            value={this.state.email}
-            onChange={this.handelInputChange('email')}
+            placeholder="Username"
+            value={this.state.username}
+            onChange={this.handelInputChange('username')}
           />
           <FormControl
             className="LoginCard-input"

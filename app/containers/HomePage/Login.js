@@ -15,10 +15,19 @@ const Wrapper = styled.div`
   display: inline-block;
 `;
 
+const LoginError = styled.p`
+  color: red;
+  margin: 0;
+  text-align: center;
+`;
+
 export default class LoginCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
-    error: React.PropTypes.string,
     login: React.PropTypes.func.isRequired,
+    error: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.bool,
+    ]),
   }
 
   static defaultProps = {
@@ -42,8 +51,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
 
   handelSubmit = (e) => {
     e.preventDefault();
-    console.log('form submited');
-    this.props.login(this.state.username, this.state.password);
+    this.props.login({ username: this.state.username, password: this.state.password });
   }
 
   render() {
@@ -70,7 +78,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
           />
           <HeaderButton type={'submit'}>Login</HeaderButton>
         </Form>
-        {this.props.error ? <span>{this.props.error}</span> : null}
+        {this.props.error ? <LoginError>{this.props.error}</LoginError> : null}
       </Wrapper>
     );
   }
