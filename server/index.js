@@ -48,6 +48,13 @@ const parsePassport = (user, info) => {
     expiresIn: '4h',
   });
 
+  /**
+   * Remove password before sending data to client
+   * Set to undefined so it does not show up as a key to the client
+   * When object is stringified it does not keep keys that have value of undefined
+   */
+  user.password = undefined;
+
   return { success: true, token, user, expiresIn: 14400000 };
 };
 
