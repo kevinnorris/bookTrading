@@ -5,28 +5,38 @@ import {
   LOGOUT_USER,
 } from './constants';
 
-export function authenticateUser() {
+export function loginRequest(payload) {
   return {
     type: AUTHENTICATE_USER,
+    payload,
+    login: true,
   };
 }
 
-export function userLoggedIn(user, token) {
+export function signupRequest(payload) {
+  console.log('signupRequest action called');
+  return {
+    type: AUTHENTICATE_USER,
+    payload,
+    login: false,
+  };
+}
+
+export function authUserSuccess(payload) {
   return {
     type: AUTHENTICATE_USER_SUCCESS,
-    user,
-    token,
+    payload,
   };
 }
 
-export function userLogginError(error) {
+export function authUserError(error) {
   return {
     type: AUTHENTICATE_USER_ERROR,
     error,
   };
 }
 
-export function logtoutUser() {
+export function logoutUser() {
   return {
     type: LOGOUT_USER,
   };
