@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { createStructuredSelector } from 'reselect';
 
+import { signupRequest } from 'containers/App/actions';
+import { makeSelectError } from 'containers/App/selectors';
 import Header from 'components/Header';
 import SignupCard from 'components/SignupCard';
 
@@ -17,7 +20,7 @@ export class SignupPage extends React.PureComponent { // eslint-disable-line rea
         />
         <Header location={this.props.location.pathname} />
         <div className="container">
-          <SignupCard signup={() => { console.log('signup'); }} />
+          <SignupCard signup={this.props.signup} error={this.props.error} />
         </div>
       </div>
     );
@@ -25,15 +28,22 @@ export class SignupPage extends React.PureComponent { // eslint-disable-line rea
 }
 
 SignupPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  signup: PropTypes.func.isRequired,
   location: PropTypes.object,
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
 };
 
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectError(),
+});
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    signup: (payload) => dispatch(signupRequest(payload)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(SignupPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
