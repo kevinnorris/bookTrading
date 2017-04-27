@@ -10,7 +10,7 @@
  */
 
 import React from 'react';
-import Header from 'components/Header';
+import Header from 'containers/Header';
 
 export default class NotFound extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {

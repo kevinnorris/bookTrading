@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { loginRequest } from 'containers/App/actions';
 import { makeSelectError } from 'containers/App/selectors';
-import Header from 'components/Header';
+import Header from 'containers/Header';
 import LoginCard from 'components/LoginCard';
 
 export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function

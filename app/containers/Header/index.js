@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
+import { makeSelectToken } from 'containers/App/selectors';
 import HeaderLink from 'components/HeaderLink';
 import Wrapper from './Wrapper';
 import Logo from './Logo';
@@ -8,7 +11,6 @@ import Controls from './Controls';
 
 
 function Header({ location }) {
-  console.log(location);
   return (
     <Wrapper>
       <Logo to="/">
@@ -27,4 +29,8 @@ Header.propTypes = {
   location: React.PropTypes.string.isRequired,
 };
 
-export default Header;
+const mapStateToProps = createStructuredSelector({
+  error: makeSelectToken(),
+});
+
+export default connect(mapStateToProps, null)(Header);
