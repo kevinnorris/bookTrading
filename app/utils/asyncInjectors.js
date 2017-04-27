@@ -66,6 +66,28 @@ export function injectAsyncSagas(store, isValid) {
 }
 
 /**
+ * Redirects authenticated users  to the dashboard
+ */
+export function redirectToDashboard(store) {
+  return (nextState, replace) => {
+    if (store.getState().get('global').get('token')) {
+      replace('/dashboard');
+    }
+  };
+}
+
+/**
+ * Redirects unauthenticated users to the home page
+ */
+export function redirectToHome(store) {
+  return (nextState, replace) => {
+    if (!store.getState().get('global').get('token')) {
+      replace('/');
+    }
+  };
+}
+
+/**
  * Helper for creating injectors
  */
 export function getAsyncInjectors(store) {
@@ -74,5 +96,7 @@ export function getAsyncInjectors(store) {
   return {
     injectReducer: injectAsyncReducer(store, true),
     injectSagas: injectAsyncSagas(store, true),
+    redirectToDashboard: redirectToDashboard(store),
+    redirectToHome: redirectToHome(store),
   };
 }
