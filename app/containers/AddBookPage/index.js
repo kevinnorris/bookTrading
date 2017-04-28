@@ -5,6 +5,8 @@ import { createStructuredSelector } from 'reselect';
 
 import Header from 'containers/Header';
 import makeSelectAddBookPage from './selectors';
+import Search from './Search';
+import { searchRequest } from './actions';
 
 export class AddBookPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -18,7 +20,7 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
         />
         <Header location={this.props.location.pathname} />
         <div className="container">
-
+          <Search search={this.props.searchRequest} />
         </div>
       </div>
     );
@@ -26,8 +28,8 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
 }
 
 AddBookPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   location: PropTypes.object,
+  searchRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -36,7 +38,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    searchRequest: (payload) => dispatch(searchRequest(payload)),
   };
 }
 

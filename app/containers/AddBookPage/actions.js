@@ -1,5 +1,4 @@
 import {
-  CHANGE_SEARCH_TERM,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
   SEARCH_ERROR,
@@ -7,16 +6,10 @@ import {
   UNSELECT_BOOK,
 } from './constants';
 
-export function changeSearchTerm(payload) {
-  return {
-    type: CHANGE_SEARCH_TERM,
-    payload,
-  };
-}
-
-export function searchRequest() {
+export function searchRequest(payload) {
   return {
     type: SEARCH_REQUEST,
+    payload,
   };
 }
 

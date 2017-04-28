@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable';
 import {
-  CHANGE_SEARCH_TERM,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
   SEARCH_ERROR,
@@ -9,7 +8,6 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  searchTerm: false,
   searching: false,
   error: false,
   books: false,
@@ -18,9 +16,6 @@ const initialState = fromJS({
 
 function addBookPageReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_SEARCH_TERM:
-      return state
-        .set('searchTerm', action.payload.searchTerm);
     case SEARCH_REQUEST:
       return state
         .set('error', false)
