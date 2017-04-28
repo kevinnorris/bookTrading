@@ -9,7 +9,7 @@ const Logo = styled(Link)`
   font-weight: bold;
   text-decoration: none;
 
-  &:hover{
+  &:hover, &:active, &:focus{
     text-decoration: none;
     color: ${primaryDarker};
   }
