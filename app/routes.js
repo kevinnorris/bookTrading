@@ -64,6 +64,26 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/mybooks',
+      name: 'myBooksPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/MyBooksPage/reducer'),
+          import('containers/MyBooksPage/sagas'),
+          import('containers/MyBooksPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('myBooksPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
