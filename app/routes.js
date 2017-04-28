@@ -55,6 +55,15 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      onEnter: redirectToHome,
+      path: '/dashboard',
+      name: 'dashboardPage',
+      getComponent(location, cb) {
+        import('containers/DashboardPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
