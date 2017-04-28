@@ -13,6 +13,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Row, Col } from 'react-bootstrap';
+import Helmet from 'react-helmet';
 
 import { loginRequest } from 'containers/App/actions';
 import { makeSelectError } from 'containers/App/selectors';
@@ -25,6 +26,12 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
   render() {
     return (
       <div>
+        <Helmet
+          title="Book Trader"
+          meta={[
+            { name: 'description', content: 'Landing page of Book Trader' },
+          ]}
+        />
         <Header login={this.props.login} error={this.props.error} />
         <div className="container text-center">
           <Title>How It Works</Title>
