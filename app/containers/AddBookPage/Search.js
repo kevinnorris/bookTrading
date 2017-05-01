@@ -21,7 +21,9 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
 
   handelSubmit = (e) => {
     e.preventDefault();
-    this.props.search({ searchTerm: this.state.searchTerm });
+    if (this.state.searchTerm.length > 0) {
+      this.props.search({ searchTerm: this.state.searchTerm });
+    }
   }
 
   render() {
@@ -29,7 +31,11 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
       <form onSubmit={this.handelSubmit}>
         <FormGroup>
           <InputGroup>
-            <FormControl type="text" onChange={this.handelInputChange} />
+            <FormControl
+              type="text"
+              placeholder="Book"
+              onChange={this.handelInputChange}
+            />
             <InputGroup.Button>
               <Button type="submit">Search</Button>
             </InputGroup.Button>
