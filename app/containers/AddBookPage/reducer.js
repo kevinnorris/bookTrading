@@ -11,7 +11,7 @@ const initialState = fromJS({
   searching: false,
   error: false,
   books: false,
-  selectedBook: false,
+  activeBook: false,
 });
 
 function addBookPageReducer(state = initialState, action) {
@@ -20,7 +20,7 @@ function addBookPageReducer(state = initialState, action) {
       return state
         .set('error', false)
         .set('books', false)
-        .set('selectedBook', false)
+        .set('activeBook', false)
         .set('searching', true);
     case SEARCH_SUCCESS:
       return state
@@ -32,10 +32,10 @@ function addBookPageReducer(state = initialState, action) {
         .set('error', action.payload.error);
     case SELECT_BOOK:
       return state
-        .set('selectedBook', action.payload.book);
+        .set('activeBook', action.payload.book);
     case UNSELECT_BOOK:
       return state
-        .set('selectedBook', false);
+        .set('activeBook', false);
     default:
       return state;
   }
