@@ -3,23 +3,35 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the addBookPage state domain
  */
-const selectAddBookPageDomain = () => (state) => state.get('addBookPage');
+const selectAddBookPageDomain = (state) => state.get('addBookPage');
 
 /**
  * Other specific selectors
  */
-
-
-/**
- * Default selector used by AddBookPage
- */
-
-const makeSelectAddBookPage = () => createSelector(
-  selectAddBookPageDomain(),
-  (substate) => substate.toJS()
+const makeSelectSearching = () => createSelector(
+  selectAddBookPageDomain,
+  (AddBookState) => AddBookState.get('searching')
 );
 
-export default makeSelectAddBookPage;
+const makeSelectError = () => createSelector(
+  selectAddBookPageDomain,
+  (AddBookState) => AddBookState.get('error')
+);
+
+const makeSelectBooks = () => createSelector(
+  selectAddBookPageDomain,
+  (AddBookState) => AddBookState.get('books')
+);
+
+const makeSelectActiveBook = () => createSelector(
+  selectAddBookPageDomain,
+  (AddBookState) => AddBookState.get('activeBook')
+);
+
 export {
   selectAddBookPageDomain,
+  makeSelectSearching,
+  makeSelectError,
+  makeSelectBooks,
+  makeSelectActiveBook,
 };
