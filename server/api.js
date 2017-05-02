@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const User = require('./models/users');
 
 const searchUrl = (searchTerms, startIndex = 0) => (
-  `https://www.googleapis.com/books/v1/volumes?q=javascript&startIndex=${startIndex}&fields=items(id%2CvolumeInfo(authors%2CaverageRating%2Ccategories%2Cdescription%2CimageLinks%2Fthumbnail%2Clanguage%2CpageCount%2CpreviewLink%2CratingsCount%2Ctitle))&key=${process.env.GOOGLE_BOOKS_API_KEY}`
+  `https://www.googleapis.com/books/v1/volumes?q=${searchTerms}&startIndex=${startIndex}&fields=items(id%2CvolumeInfo(authors%2CaverageRating%2Ccategories%2Cdescription%2CimageLinks%2Fthumbnail%2Clanguage%2CpageCount%2CpreviewLink%2CratingsCount%2Ctitle))&key=${process.env.GOOGLE_BOOKS_API_KEY}`
 );
 
 const formatData = (data) => (
@@ -16,7 +16,7 @@ const formatData = (data) => (
       description: item.volumeInfo.description,
       pageCount: item.volumeInfo.pageCount,
       categories: item.volumeInfo.categories,
-      thumbnail: item.volumeInfo.imageLinks.thumbnail,
+      thumbnail: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'https://books.google.co.nz/googlebooks/images/no_cover_thumb.gif',
       language: item.volumeInfo.language,
       previewLink: item.volumeInfo.previewLink,
       averageRating: item.volumeInfo.averageRating,
