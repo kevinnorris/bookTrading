@@ -3,8 +3,6 @@ import request from 'utils/request';
 import { appUrl } from 'utils/constants';
 import {
   SEARCH_REQUEST,
-  SELECT_BOOK,
-  UNSELECT_BOOK,
 } from './constants';
 import { searchSuccess, searchError } from './actions';
 
@@ -18,7 +16,7 @@ export function* searchSaga(action) {
       yield put(searchError({ error: books.error }));
     }
   } catch (error) {
-    yield put(searchError({ error }));
+    yield put(searchError({ error: error.response }));
   }
 }
 
