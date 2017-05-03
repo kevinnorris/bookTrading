@@ -15,7 +15,7 @@ import {
   makeSelectActiveBook,
 } from './selectors';
 import Search from './Search';
-import { searchRequest, selectBook, unselectBook } from './actions';
+import { searchRequest, selectBook, unselectBook, addBook } from './actions';
 
 export class AddBookPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   selectBook = (index) => (
@@ -26,6 +26,14 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
 
   unselectBook = () => {
     this.props.unselectBook();
+  }
+
+  addBook = (book) => {
+    const unselect = this.unselectBook;
+    return () => {
+      this.props.addBook({ book });
+      // unselect();
+    };
   }
 
   render() {
@@ -59,7 +67,7 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
           onHide={this.unselectBook}
           currentBook={currentBook}
           buttonText={'Add Book'}
-          buttonAction={() => console.log('Book added')}
+          buttonAction={this.addBook(currentBook)}
         />
       </div>
     );
@@ -75,6 +83,7 @@ AddBookPage.propTypes = {
   activeBook: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   selectBook: PropTypes.func.isRequired,
   unselectBook: PropTypes.func.isRequired,
+  addBook: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -89,6 +98,7 @@ function mapDispatchToProps(dispatch) {
     searchRequest: (payload) => dispatch(searchRequest(payload)),
     selectBook: (payload) => dispatch(selectBook(payload)),
     unselectBook: () => dispatch(unselectBook()),
+    addBook: (payload) => dispatch(addBook(payload)),
   };
 }
 

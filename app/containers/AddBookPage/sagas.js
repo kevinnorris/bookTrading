@@ -4,8 +4,14 @@ import { appUrl } from 'utils/constants';
 import { makeSelectToken, makeSelectUserId } from 'containers/App/selectors';
 import {
   SEARCH_REQUEST,
+  ADD_BOOK_REQUEST,
 } from './constants';
-import { searchSuccess, searchError } from './actions';
+import {
+  searchSuccess,
+  searchError,
+  addBookSuccess,
+  addBookError,
+} from './actions';
 
 export function* searchSaga(action) {
   const token = yield select(makeSelectToken());
@@ -24,12 +30,35 @@ export function* searchSaga(action) {
 }
 
 export function* searchData() {
-  const watcher = yield [
-    takeLatest(SEARCH_REQUEST, searchSaga),
-  ];
+  yield takeLatest(SEARCH_REQUEST, searchSaga);
+}
+
+export function* addBookSaga(action) {
+  const token = yield select(makeSelectToken());
+  const userId = yield select(makeSelectUserId());
+  try {
+    console.log(action.payload);
+    const bookAdded = yield call(request, `${appUrl}/api/addBook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, userId, googleData: action.payload.book }),
+    });
+    if (bookAdded.success) {
+      yield put(addBookSuccess());
+    } else {
+      yield put(addBookError({ error: bookAdded.error }));
+    }
+  } catch (error) {
+    yield put(addBookError({ error: error.response }));
+  }
+}
+
+export function* addBookWatcher() {
+  yield takeLatest(ADD_BOOK_REQUEST, addBookSaga);
 }
 
 // All sagas to be loaded
 export default [
   searchData,
+  addBookWatcher,
 ];
