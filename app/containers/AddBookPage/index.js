@@ -2,11 +2,12 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import { Row, Col, Modal, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import Header from 'containers/Header';
 import Title from 'components/Title';
 import BookGrid from 'components/BookGrid';
+import BookModal from 'components/BookModal';
 import {
   makeSelectSearching,
   makeSelectError,
@@ -15,7 +16,6 @@ import {
 } from './selectors';
 import Search from './Search';
 import { searchRequest, selectBook, unselectBook } from './actions';
-import ModalWrapper from './ModalWrapper';
 
 export class AddBookPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   selectBook = (index) => (
@@ -29,10 +29,9 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
   }
 
   render() {
-    let currentBook;
+    let currentBook = false;
     if (Number.isInteger(this.props.activeBook)) {
       currentBook = this.props.books[this.props.activeBook];
-      console.log(currentBook);
     }
     return (
       <div>
@@ -55,49 +54,13 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
             null
           }
         </div>
-        <Modal show={Number.isInteger(this.props.activeBook)} onHide={this.unselectBook}>
-          {currentBook ?
-            <Modal.Body>
-              <ModalWrapper>
-                <div>
-                  <p>
-                    <b>Title:</b> {currentBook.title}
-                  </p>
-                  <p>
-                    <b>Author(s):</b> {currentBook.authors ? currentBook.authors.join(', ') : ''}
-                  </p>
-                  <p>
-                    <b>Categorie(s):</b> {currentBook.categories ? currentBook.categories.join(', ') : ''}
-                  </p>
-                  <p>
-                    <b>Language:</b> {currentBook.language}
-                  </p>
-                  <p>
-                    <b>Pages:</b> {currentBook.pageCount}
-                  </p>
-                  <p>
-                    <b>Average Rating:</b> {currentBook.averageRating}
-                  </p>
-                  <p>
-                    <b>Rating Count:</b> {currentBook.ratingsCount || 0}
-                  </p>
-                </div>
-                <div>
-                  <a href={currentBook.previewLink} target="blank" rel="noopener noreferrer">
-                    <img src={currentBook.thumbnail} alt={currentBook.title} />
-                  </a>
-                </div>
-              </ModalWrapper>
-              <p>
-                <b>Description:</b> {currentBook.description}
-              </p>
-            </Modal.Body> :
-            null
-          }
-          <Modal.Footer>
-            <Button onClick={this.unselectBook}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+        <BookModal
+          show={Number.isInteger(this.props.activeBook)}
+          onHide={this.unselectBook}
+          currentBook={currentBook}
+          buttonText={'Add Book'}
+          buttonAction={() => console.log('Book added')}
+        />
       </div>
     );
   }
