@@ -18,6 +18,7 @@ if (cookie) {
     error: false,
     token: cookie.token,
     expireDate: new Date(cookie.expireDate),
+    userId: cookie.userId,
     userData: {
       username: cookie.user.username,
       email: cookie.user.email,
@@ -33,6 +34,7 @@ if (cookie) {
     authenticating: false,
     error: false,
     token: false,
+    userId: false,
     userData: {
       username: false,
       email: false,
@@ -62,6 +64,7 @@ function appReducer(state = initialState, action) {
       return state
         .set('authenticating', false)
         .set('token', action.payload.token)
+        .set('userId', action.payload.userId)
         .setIn(['userData', 'username'], action.payload.user.username)
         .setIn(['userData', 'email'], action.payload.user.email)
         .setIn(['userData', 'points'], action.payload.user.points)

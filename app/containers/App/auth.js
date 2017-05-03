@@ -8,10 +8,11 @@ const localStorageString = 'bookTrader-FCC';
  * Save user data to local storage and return the cookie object
  * @param {string} token
  * @param {object} user
+ * @param {string} userId
  * @param {number} expiresIn
  */
-function saveCookie(token, user, expiresIn) {
-  const cookie = { token, user };
+function saveCookie(token, user, userId, expiresIn) {
+  const cookie = { token, user, userId };
   cookie.expireDate = new Date(Date.now() + expiresIn);
   localStorage.setItem(localStorageString, JSON.stringify(cookie));
   return cookie;
@@ -31,7 +32,7 @@ export function login(username, password) {
     body: JSON.stringify({ username, password }),
   })
     .then((response) => (
-      saveCookie(response.token, response.user, response.expiresIn)
+      saveCookie(response.token, response.user, response.userId, response.expiresIn)
     ));
 }
 
@@ -50,7 +51,7 @@ export function signup({ username, password, email, name, city, state, country }
     .then((response) => {
       console.log('response from server:');
       console.log(response);
-      return saveCookie(response.token, response.user, response.expiresIn);
+      return saveCookie(response.token, response.user, response.userId, response.expiresIn);
     });
 }
 

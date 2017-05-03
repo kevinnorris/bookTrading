@@ -43,7 +43,7 @@ const parsePassport = (user, info) => {
   const token = jwt.sign({
     sub: user._id,
     iss: process.env.APP_URL,
-    iat: (new Date().getTime()),
+    iat: Date.now(),
   }, process.env.JWT_SECRET, {
     expiresIn: '4h',
   });
@@ -55,7 +55,7 @@ const parsePassport = (user, info) => {
    */
   user.password = undefined;
 
-  return { success: true, token, user, expiresIn: 14400000 };
+  return { success: true, token, user, userId: user._id, expiresIn: 14400000 };
 };
 
 app.route('/auth/signup')

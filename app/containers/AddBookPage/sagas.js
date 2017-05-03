@@ -1,13 +1,16 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, select, put } from 'redux-saga/effects';
 import request from 'utils/request';
 import { appUrl } from 'utils/constants';
+import { makeSelectToken, makeSelectUserId } from 'containers/App/selectors';
 import {
   SEARCH_REQUEST,
 } from './constants';
 import { searchSuccess, searchError } from './actions';
 
 export function* searchSaga(action) {
-  const requestUrl = `${appUrl}/api/search?searchTerm=${action.payload.searchTerm}`;
+  const token = yield select(makeSelectToken());
+  const userId = yield select(makeSelectUserId());
+  const requestUrl = `${appUrl}/api/search?searchTerm=${action.payload.searchTerm}&&token=${token}&&userId=${userId}`;
   try {
     const books = yield call(request, requestUrl);
     if (books.success) {
