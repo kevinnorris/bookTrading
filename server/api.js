@@ -93,7 +93,7 @@ apiRoutes.post('/addBook', tokenVerify, (req, res) => {
     const newBook = new Book();
 
     newBook.owner = req.body.userId;
-    newBook.googleData = JSON.parse(req.body.googleData);
+    newBook.googleData = req.body.googleData;
     newBook.requests = [];
 
     newBook.save((e) => {
