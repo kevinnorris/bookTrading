@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const Books = new mongoose.Schema({
-  name: String,
   owner: String,
   googleData: {
     id: String,
@@ -16,9 +15,6 @@ const Books = new mongoose.Schema({
     thumbnail: String,
     previewLink: String,
   },
-  requests: [
-    String,
-  ],
 });
 
 module.exports = mongoose.model('Books', Books);
