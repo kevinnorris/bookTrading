@@ -4,10 +4,10 @@ import { Pagination } from 'react-bootstrap';
 import BookGrid from 'components/BookGrid';
 
 
-function PagedGrid({ numPages, activePage, selectPage, books, selectBook }) {
+function PagedGrid({ numPages, activePage, selectPage, books, selectBook, loading }) {
   return (
     <div>
-      <BookGrid books={books} select={selectBook} />
+      <BookGrid books={books} select={selectBook} loading={loading} />
       <Pagination
         prev
         next
@@ -28,6 +28,7 @@ PagedGrid.propTypes = {
   activePage: React.PropTypes.number.isRequired,
   selectPage: React.PropTypes.func.isRequired,
   selectBook: React.PropTypes.func,
+  loading: React.PropTypes.bool,
 };
 
 export default PagedGrid;

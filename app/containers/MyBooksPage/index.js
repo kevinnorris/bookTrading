@@ -57,6 +57,7 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
             selectPage={this.handelPageSelect}
             books={books}
             selectBook={this.selectBook}
+            loading={this.props.fetching}
           />
         </div>
       </div>
