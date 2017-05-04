@@ -40,7 +40,7 @@ function tokenVerify(req, res, next) {
 
   // decode token
   if (token && userId) {
-    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         res.json({ success: false, error: err.message });
       } else {
@@ -87,6 +87,50 @@ apiRoutes.get('/search', tokenVerify, (req, res) => {
   }
 });
 
+apiRoutes.get('/books', tokenVerify, (req, res) => {
+  // Books per page
+  let booksPerPage = 12;
+  if (req.query.booksPerPage) {
+    booksPerPage = req.query.booksPerPage;
+  }
+
+  let filterBy = {};
+  if (req.query.myBooks) {
+    filterBy = { owner: req.query.userId };
+  }
+  // Get number of books
+  Book.count(filterBy, (e, count) => {
+    if (e) {
+      return res.json({ success: false, message: e.message });
+    }
+
+    const numPages = Math.ceil(count / booksPerPage);
+    const sortBy = { 'googleData.title': 1 };
+
+    // Get page worth of books
+    if (req.query.activePage) {
+      Book.find().where(filterBy).sort(sortBy).limit(booksPerPage)
+      .skip(booksPerPage * (req.query.activePage - 1))
+        .exec((err, books) => {
+          if (err) {
+            res.json({ success: false, message: err.message });
+          } else {
+            res.json({ success: true, books, numPages });
+          }
+        });
+    } else {
+      Book.find().where(filterBy).sort(sortBy).limit(booksPerPage)
+        .exec((err, books) => {
+          if (err) {
+            res.json({ success: false, message: err.message });
+          } else {
+            res.json({ success: true, books, numPages });
+          }
+        });
+    }
+  });
+});
+
 apiRoutes.post('/addBook', tokenVerify, (req, res) => {
   // Check required info is passed
   if (req.body.googleData) {
@@ -107,7 +151,7 @@ apiRoutes.post('/addBook', tokenVerify, (req, res) => {
 
 apiRoutes.post('/removeBook', tokenVerify, (req, res) => {
   if (req.body.bookId) {
-    Book.remove({ _id: req.body.bookId }, function (err) {
+    Book.remove({ _id: req.body.bookId }, (err) => {
       if (!err) {
         return res.json({ success: true });
       }
@@ -138,7 +182,7 @@ apiRoutes.post('/requestBook', tokenVerify, (req, res) => {
 
 apiRoutes.post('/removeRequest', tokenVerify, (req, res) => {
   if (req.body.requestId) {
-    Request.remove({ _id: req.body.requestId }, function (err) {
+    Request.remove({ _id: req.body.requestId }, (err) => {
       if (!err) {
         res.json({ success: true });
       } else {
@@ -172,7 +216,7 @@ apiRoutes.get('/deleteUsers', (req, res) => {
   });
 });
 
-apiRoutes.get('/books', (req, res) => {
+apiRoutes.get('/allBooks', (req, res) => {
   Book.find({}, (err, books) => {
     if (err) {
       res.json({ success: false, error: err.message });
