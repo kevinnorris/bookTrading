@@ -1,4 +1,5 @@
 import { takeLatest, call, select, put } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import request from 'utils/request';
 import { appUrl } from 'utils/constants';
 import { makeSelectToken, makeSelectUserId } from 'containers/App/selectors';
@@ -45,6 +46,7 @@ export function* addBookSaga(action) {
     });
     if (bookAdded.success) {
       yield put(addBookSuccess());
+      yield put(push('/mybooks'));
     } else {
       yield put(addBookError({ error: bookAdded.error }));
     }
