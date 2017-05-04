@@ -55,8 +55,8 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
               <Search search={this.props.searchRequest} />
             </Col>
           </Row>
-          {this.props.books ?
-            <BookGrid books={this.props.books} select={this.selectBook} /> :
+          {this.props.books || this.props.searching ?
+            <BookGrid books={this.props.books ? this.props.books : []} select={this.selectBook} loading={this.props.searching} /> :
             null
           }
         </div>
