@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'components/Button';
+import ActionButton from 'components/ActionButton';
 import * as val from 'utils/fieldValidation';
 import TextField from 'components/TextField';
 import Title from 'components/Title';
@@ -122,7 +122,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
           <p>* required fields</p>
           <div className="text-center">
             {this.props.error ? <ServerError>{this.props.error}</ServerError> : ''}
-            <Button type="submit">Submit</Button>
+            <ActionButton type="submit">Submit</ActionButton>
           </div>
         </form>
       </CenterCard>

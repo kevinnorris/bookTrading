@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Modal } from 'react-bootstrap';
 
 import * as colors from 'utils/colors';
-import Button from 'components/Button';
 
 const ModalHeader = styled(Modal.Header)`
   text-align: center;
@@ -25,7 +24,7 @@ const InfoWrapper = styled.div`
   margin-bottom: 15px;
 `;
 
-function BookModal({ show, onHide, currentBook, buttonText, buttonAction }) {
+function BookModal({ show, onHide, currentBook, buttonText, buttonAction, ButtonType }) {
   let modalHeader = null;
   let modalBody = null;
   let modalFooter = null;
@@ -74,7 +73,7 @@ function BookModal({ show, onHide, currentBook, buttonText, buttonAction }) {
     );
     modalFooter = (
       <ModalFooter>
-        <Button onClick={buttonAction}>{buttonText}</Button>
+        <ButtonType onClick={buttonAction}>{buttonText}</ButtonType>
       </ModalFooter>
     );
   }
@@ -96,6 +95,7 @@ BookModal.propTypes = {
   ]).isRequired,
   buttonText: React.PropTypes.string.isRequired,
   buttonAction: React.PropTypes.func.isRequired,
+  ButtonType: React.PropTypes.func.isRequired,
 };
 
 export default BookModal;

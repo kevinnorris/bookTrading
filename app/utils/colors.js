@@ -11,3 +11,6 @@ export const actionHover = '#3d9363';
 export const linkColor = '#00635d';
 
 export const detailText = '#999999';
+
+export const deleteColor = '#9d4040';
+export const deleteHover = '#923c3c';

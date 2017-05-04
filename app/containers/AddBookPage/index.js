@@ -8,6 +8,7 @@ import Header from 'containers/Header';
 import Title from 'components/Title';
 import BookGrid from 'components/BookGrid';
 import BookModal from 'components/BookModal';
+import ActionButton from 'components/ActionButton';
 import {
   makeSelectSearching,
   makeSelectError,
@@ -66,6 +67,7 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
           currentBook={currentBook}
           buttonText={'Add Book'}
           buttonAction={this.addBook(currentBook)}
+          ButtonType={ActionButton}
           loading={this.props.searching}
         />
       </div>

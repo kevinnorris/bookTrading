@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import Button from 'components/Button';
+import ActionButton from 'components/ActionButton';
 import CenterCard from 'components/CenterCard';
 import Title from 'components/Title';
 import ServerError from 'components/ServerError';
@@ -66,7 +66,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
             onChange={this.handelInputChange('password')}
           />
           {this.props.error ? <ServerError>{this.props.error}</ServerError> : ''}
-          <Button type="submit">Submit</Button>
+          <ActionButton type="submit">Submit</ActionButton>
         </form>
       </CenterCard>
     );
