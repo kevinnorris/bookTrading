@@ -28,13 +28,11 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
     this.props.unselectBook();
   }
 
-  addBook = (book) => {
-    const unselect = this.unselectBook;
-    return () => {
+  addBook = (book) => (
+    () => {
       this.props.addBook({ book });
-      // unselect();
-    };
-  }
+    }
+  )
 
   render() {
     let currentBook = false;
