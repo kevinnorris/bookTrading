@@ -18,6 +18,7 @@ export class DashboardPage extends React.PureComponent { // eslint-disable-line 
         <Header location={this.props.location.pathname} />
         <div className="container">
           <LinkButton to={'/mybooks'}>My Books</LinkButton>
+          <LinkButton to={'/browse'}>Browse Books</LinkButton>
         </div>
       </div>
     );
