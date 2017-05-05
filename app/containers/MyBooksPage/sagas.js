@@ -1,12 +1,15 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects';
+import { takeLatest, call, put, select, take, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import request from 'utils/request';
 import { appUrl } from 'utils/constants';
 import { makeSelectToken, makeSelectUserId } from 'containers/App/selectors';
+import { unselectBook } from 'containers/App/actions';
 import { MY_BOOKS_REQUEST, REMOVE_BOOK_REQUEST } from './constants';
 import { myBooksSuccess, myBooksError, removeBookSuccess, removeBookError } from './actions';
 
 export function* myBooksSaga(action) {
+  console.log('my books saga happening');
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
   const activePage = action.payload.activePage ? action.payload.activePage : 0;
@@ -24,7 +27,10 @@ export function* myBooksSaga(action) {
 }
 
 export function* myBooksWatcher() {
-  yield takeLatest(MY_BOOKS_REQUEST, myBooksSaga);
+  const watcher = yield takeLatest(MY_BOOKS_REQUEST, myBooksSaga);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* removeBookSaga(action) {
@@ -39,9 +45,8 @@ export function* removeBookSaga(action) {
       body: JSON.stringify({ token, userId, bookId: action.payload.bookId }),
     });
     if (removedBook.success) {
+      yield put(unselectBook());  // Closes the modal
       yield put(removeBookSuccess({ bookId: action.payload.bookId }));
-      // Set selected book to false (should close modal)
-      // yield put(push('/mybooks'));
     } else {
       yield put(removeBookError({ error: removedBook.error }));
     }
@@ -51,7 +56,10 @@ export function* removeBookSaga(action) {
 }
 
 export function* removeBookWatcher() {
-  yield takeLatest(REMOVE_BOOK_REQUEST, removeBookSaga);
+  const watcher = yield takeLatest(REMOVE_BOOK_REQUEST, removeBookSaga);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 // All sagas to be loaded

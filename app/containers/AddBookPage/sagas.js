@@ -1,8 +1,10 @@
-import { takeLatest, call, select, put } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { takeLatest, call, select, put, take, cancel } from 'redux-saga/effects';
+import { push, LOCATION_CHANGE } from 'react-router-redux';
+
 import request from 'utils/request';
 import { appUrl } from 'utils/constants';
 import { makeSelectToken, makeSelectUserId } from 'containers/App/selectors';
+import { unselectBook } from 'containers/App/actions';
 import {
   SEARCH_REQUEST,
   ADD_BOOK_REQUEST,
@@ -31,7 +33,10 @@ export function* searchSaga(action) {
 }
 
 export function* searchData() {
-  yield takeLatest(SEARCH_REQUEST, searchSaga);
+  const watcher = yield takeLatest(SEARCH_REQUEST, searchSaga);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export function* addBookSaga(action) {
@@ -45,6 +50,7 @@ export function* addBookSaga(action) {
       body: JSON.stringify({ token, userId, googleData: action.payload.book }),
     });
     if (bookAdded.success) {
+      yield put(unselectBook());
       yield put(addBookSuccess());
       yield put(push('/mybooks'));
     } else {
@@ -56,7 +62,10 @@ export function* addBookSaga(action) {
 }
 
 export function* addBookWatcher() {
-  yield takeLatest(ADD_BOOK_REQUEST, addBookSaga);
+  const watcher = yield takeLatest(ADD_BOOK_REQUEST, addBookSaga);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 // All sagas to be loaded
