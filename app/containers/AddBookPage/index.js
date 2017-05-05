@@ -9,14 +9,15 @@ import Title from 'components/Title';
 import BookGrid from 'components/BookGrid';
 import BookModal from 'components/BookModal';
 import ActionButton from 'components/ActionButton';
+import { makeSelectActiveBook } from 'containers/App/selectors';
+import { selectBook, unselectBook } from 'containers/App/actions';
 import {
   makeSelectSearching,
   makeSelectError,
   makeSelectBooks,
-  makeSelectActiveBook,
 } from './selectors';
 import Search from './Search';
-import { searchRequest, selectBook, unselectBook, addBook } from './actions';
+import { searchRequest, addBook } from './actions';
 
 export class AddBookPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   selectBook = (index) => (

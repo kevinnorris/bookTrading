@@ -7,6 +7,8 @@ import {
   AUTHENTICATE_USER_SUCCESS,
   AUTHENTICATE_USER_ERROR,
   LOGOUT_USER,
+  SELECT_BOOK,
+  UNSELECT_BOOK,
 } from './constants';
 
 // The initial state of the App, If a cookie is available initialize state with its data
@@ -28,6 +30,7 @@ if (cookie) {
       state: cookie.user.state,
       country: cookie.user.country,
     },
+    activeBook: false,
   });
 } else {
   initialState = fromJS({
@@ -44,6 +47,7 @@ if (cookie) {
       state: false,
       country: false,
     },
+    activeBook: false,
   });
 }
 
@@ -86,6 +90,12 @@ function appReducer(state = initialState, action) {
         .setIn(['userData', 'city'], false)
         .setIn(['userData', 'state'], false)
         .setIn(['userData', 'country'], false);
+    case SELECT_BOOK:
+      return state
+        .set('activeBook', action.payload.book);
+    case UNSELECT_BOOK:
+      return state
+        .set('activeBook', false);
     default:
       return state;
   }

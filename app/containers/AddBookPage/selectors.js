@@ -23,15 +23,9 @@ const makeSelectBooks = () => createSelector(
   (AddBookState) => AddBookState.get('books')
 );
 
-const makeSelectActiveBook = () => createSelector(
-  selectAddBookPageDomain,
-  (AddBookState) => AddBookState.get('activeBook')
-);
-
 export {
   selectAddBookPageDomain,
   makeSelectSearching,
   makeSelectError,
   makeSelectBooks,
-  makeSelectActiveBook,
 };

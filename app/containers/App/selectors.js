@@ -35,6 +35,11 @@ const makeSelectUserData = () => createSelector(
   })
 );
 
+const makeSelectActiveBook = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('activeBook')
+);
+
 // makeSelectLocationState expects a plain JS object for the routing state
 const makeSelectLocationState = () => {
   let prevRoutingState;
@@ -59,5 +64,6 @@ export {
   makeSelectToken,
   makeSelectUserId,
   makeSelectUserData,
+  makeSelectActiveBook,
   makeSelectLocationState,
 };

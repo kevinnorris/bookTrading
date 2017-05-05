@@ -16,3 +16,6 @@ export const AUTHENTICATE_USER_SUCCESS = 'bookTrader/App/AUTHENTICATE_USER_SUCCE
 export const AUTHENTICATE_USER_ERROR = 'bookTrader/App/AUTHENTICATE_USER_ERROR';
 
 export const LOGOUT_USER = 'bookTrader/App/LOGOUT_USER';
+
+export const SELECT_BOOK = 'bookTrader/App/SELECT_BOOK';
+export const UNSELECT_BOOK = 'bookTrader/App/UNSELECT_BOOK';

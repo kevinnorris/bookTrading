@@ -8,14 +8,15 @@ import LinkButton from 'components/LinkButton';
 import PagedGrid from 'components/PagedGrid';
 import BookModal from 'components/BookModal';
 import DeleteButton from 'components/DeleteButton';
-import { myBooksRequest, selectBook, unselectBook, removeBook } from './actions';
+import { makeSelectActiveBook } from 'containers/App/selectors';
+import { selectBook, unselectBook } from 'containers/App/actions';
+import { myBooksRequest, removeBook } from './actions';
 import {
   makeSelectFetching,
   makeSelectError,
   makeSelectBooks,
   makeSelectNumPages,
   makeSelectActivePage,
-  makeSelectActiveBook,
 } from './selectors';
 
 export class MyBooksPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -37,12 +38,11 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
     this.props.unselectBook();
   }
 
-  removeBook = (bookId) => {
-    console.log(`removeBook called with ${bookId}`);
-    return () => {
+  removeBook = (bookId) => (
+    () => {
       this.props.removeBook({ bookId });
-    };
-  }
+    }
+  )
 
   render() {
     let books = [];

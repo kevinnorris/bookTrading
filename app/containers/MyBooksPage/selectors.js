@@ -32,11 +32,6 @@ const makeSelectActivePage = () => createSelector(
   selectMyBooksPageDomain(),
   (MyBooksState) => MyBooksState.get('activePage')
 );
-
-const makeSelectActiveBook = () => createSelector(
-  selectMyBooksPageDomain(),
-  (MyBooksState) => MyBooksState.get('activeBook')
-);
 /**
  * Default selector used by MyBooksPage
  */
@@ -54,5 +49,4 @@ export {
   makeSelectBooks,
   makeSelectNumPages,
   makeSelectActivePage,
-  makeSelectActiveBook,
 };
