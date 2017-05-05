@@ -64,6 +64,7 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      onEnter: redirectToHome,
       path: '/mybooks',
       name: 'myBooksPage',
       getComponent(nextState, cb) {
@@ -84,6 +85,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToHome,
       path: '/addbook',
       name: 'addBookPage',
       getComponent(nextState, cb) {
