@@ -6,7 +6,9 @@ import { createStructuredSelector } from 'reselect';
 import Header from 'containers/Header';
 import LinkButton from 'components/LinkButton';
 import PagedGrid from 'components/PagedGrid';
-import { myBooksRequest, selectBook, unselectBook } from './actions';
+import BookModal from 'components/BookModal';
+import DeleteButton from 'components/DeleteButton';
+import { myBooksRequest, selectBook, unselectBook, removeBook } from './actions';
 import {
   makeSelectFetching,
   makeSelectError,
@@ -35,10 +37,22 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
     this.props.unselectBook();
   }
 
+  removeBook = (bookId) => {
+    console.log(`removeBook called with ${bookId}`);
+    return () => {
+      this.props.removeBook({ bookId });
+    };
+  }
+
   render() {
     let books = [];
+    let currentBook = false;
     if (this.props.books) {
       books = this.props.books.map((book) => book.googleData);
+    }
+    if (Number.isInteger(this.props.activeBook) && this.props.books) {
+      currentBook = this.props.books[this.props.activeBook];
+      console.log(currentBook);
     }
     return (
       <div>
@@ -60,6 +74,15 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
             loading={this.props.fetching}
           />
         </div>
+        <BookModal
+          show={Number.isInteger(this.props.activeBook)}
+          onHide={this.unselectBook}
+          currentBook={currentBook ? currentBook.googleData : false}
+          buttonText={'Remove Book'}
+          buttonAction={this.removeBook(currentBook._id)}
+          ButtonType={DeleteButton}
+          loading={this.props.fetching}
+        />
       </div>
     );
   }
@@ -76,6 +99,7 @@ MyBooksPage.propTypes = {
   requestMyBooks: PropTypes.func.isRequired,
   selectBook: PropTypes.func.isRequired,
   unselectBook: PropTypes.func.isRequired,
+  removeBook: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -92,6 +116,7 @@ function mapDispatchToProps(dispatch) {
     requestMyBooks: (payload) => dispatch(myBooksRequest(payload)),
     selectBook: (payload) => dispatch(selectBook(payload)),
     unselectBook: () => dispatch(unselectBook()),
+    removeBook: (payload) => dispatch(removeBook(payload)),
   };
 }
 
