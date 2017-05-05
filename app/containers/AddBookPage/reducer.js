@@ -5,6 +5,7 @@ import {
   SEARCH_ERROR,
   SELECT_BOOK,
   UNSELECT_BOOK,
+  ADD_BOOK_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -36,6 +37,12 @@ function addBookPageReducer(state = initialState, action) {
     case UNSELECT_BOOK:
       return state
         .set('activeBook', false);
+    case ADD_BOOK_SUCCESS:
+      return state
+        .set('error', false)
+        .set('books', false)
+        .set('activeBook', false)
+        .set('searching', false);
     default:
       return state;
   }
