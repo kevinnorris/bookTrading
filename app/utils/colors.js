@@ -14,3 +14,5 @@ export const detailText = '#999999';
 
 export const deleteColor = '#9d4040';
 export const deleteHover = '#923c3c';
+
+export const errorColor = '#e50000';

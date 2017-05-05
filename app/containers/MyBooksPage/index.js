@@ -65,6 +65,7 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
         <Header location={this.props.location.pathname} />
         <div className="container text-center">
           <LinkButton to={'/addbook'}>Add Book</LinkButton>
+          {this.props.error ? <Error>{this.props.error}</Error> : null}
           <PagedGrid
             numPages={this.props.numPages ? this.props.numPages : 1}
             activePage={this.props.activePage ? this.props.activePage : 1}

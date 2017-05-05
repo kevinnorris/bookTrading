@@ -6,6 +6,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import Header from 'containers/Header';
 import Title from 'components/Title';
+import Error from 'components/Error';
 import BookGrid from 'components/BookGrid';
 import BookModal from 'components/BookModal';
 import ActionButton from 'components/ActionButton';
@@ -57,6 +58,7 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
               <Search search={this.props.searchRequest} />
             </Col>
           </Row>
+          {this.props.error ? <Error>{this.props.error}</Error> : null}
           {this.props.books || this.props.searching ?
             <BookGrid books={this.props.books ? this.props.books : []} select={this.selectBook} loading={this.props.searching} /> :
             null
