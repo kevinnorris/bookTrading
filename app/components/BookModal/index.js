@@ -38,9 +38,6 @@ function BookModal({ show, onHide, currentBook, buttonText, buttonAction, Button
       <ModalBody>
         <InfoWrapper>
           <div>
-            {/*<p>
-              <b>Title:</b> {currentBook.title}
-            </p>*/}
             <p>
               <b>Author(s):</b> {currentBook.authors ? currentBook.authors.join(', ') : ''}
             </p>
