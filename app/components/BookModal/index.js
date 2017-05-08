@@ -24,7 +24,7 @@ const InfoWrapper = styled.div`
   margin-bottom: 15px;
 `;
 
-function BookModal({ show, onHide, currentBook, buttonText, buttonAction, ButtonType }) {
+function BookModal({ show, onHide, currentBook, hasButton = true, buttonText, buttonAction, ButtonType }) {
   let modalHeader = null;
   let modalBody = null;
   let modalFooter = null;
@@ -70,7 +70,10 @@ function BookModal({ show, onHide, currentBook, buttonText, buttonAction, Button
     );
     modalFooter = (
       <ModalFooter>
-        <ButtonType onClick={buttonAction}>{buttonText}</ButtonType>
+        {hasButton ?
+          <ButtonType onClick={buttonAction}>{buttonText}</ButtonType> :
+          null
+        }
       </ModalFooter>
     );
   }
@@ -90,6 +93,7 @@ BookModal.propTypes = {
     React.PropTypes.bool,
     React.PropTypes.object,
   ]).isRequired,
+  hasButton: React.PropTypes.bool.isRequired,
   buttonText: React.PropTypes.string.isRequired,
   buttonAction: React.PropTypes.func.isRequired,
   ButtonType: React.PropTypes.func.isRequired,
