@@ -37,8 +37,6 @@ export function* removeBookSaga(action) {
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
   try {
-    console.log('remove book saga');
-    console.log(action.payload);
     const removedBook = yield call(request, `${appUrl}/api/removeBook`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

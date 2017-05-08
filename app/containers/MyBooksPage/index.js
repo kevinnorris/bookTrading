@@ -8,6 +8,7 @@ import LinkButton from 'components/LinkButton';
 import PagedGrid from 'components/PagedGrid';
 import BookModal from 'components/BookModal';
 import DeleteButton from 'components/DeleteButton';
+import Error from 'components/Error';
 import { makeSelectActiveBook } from 'containers/App/selectors';
 import { selectBook, unselectBook } from 'containers/App/actions';
 import { myBooksRequest, removeBook } from './actions';
@@ -52,7 +53,6 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
     }
     if (Number.isInteger(this.props.activeBook) && this.props.books) {
       currentBook = this.props.books[this.props.activeBook];
-      console.log(currentBook);
     }
     return (
       <div>
