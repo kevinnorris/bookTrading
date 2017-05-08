@@ -25,13 +25,13 @@ const makeSelectUserId = () => createSelector(
 const makeSelectUserData = () => createSelector(
   selectGlobal,
   (globalState) => ({
-    username: globalState.getIn(['userData', 'username']),
     email: globalState.getIn(['userData', 'email']),
     points: globalState.getIn(['userData', 'points']),
     name: globalState.getIn(['userData', 'name']),
     city: globalState.getIn(['userData', 'city']),
     state: globalState.getIn(['userData', 'state']),
     country: globalState.getIn(['userData', 'country']),
+    zip: globalState.getIn(['userData', 'zip']),
   })
 );
 

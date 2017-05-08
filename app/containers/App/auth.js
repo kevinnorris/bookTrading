@@ -20,16 +20,16 @@ function saveCookie(token, user, userId, expiresIn) {
 
 /**
   * Logs a user in, returning a object with token and user object
-  * @param  {string} username The username of the user
+  * @param  {string} email The email of the user
   * @param  {string} password The password of the user
   */
-export function login(username, password) {
+export function login(email, password) {
   if (loggedIn()) return JSON.parse(localStorage.get(localStorageString));
 
   return request(`${appUrl}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   })
     .then((response) => (
       saveCookie(response.token, response.user, response.userId, response.expiresIn)
@@ -38,15 +38,15 @@ export function login(username, password) {
 
 /**
   * Sign a user up, returning a object with token and user object
-  * @param  {string} username The username of the user
+  * @param  {string} email The email of the user
   * @param  {string} password The password of the user
   */
-export function signup({ username, password, email, name, city, state, country }) {
-  console.log(`auth signup called with: ${username} ${email} ${password}`);
+export function signup({ email, password, name, city, state, country }) {
+  console.log(`auth signup called with: ${email} ${password}`);
   return request(`${appUrl}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password, email, name, city, state, country }),
+    body: JSON.stringify({ email, password, name, city, state, country }),
   })
     .then((response) => {
       console.log('response from server:');

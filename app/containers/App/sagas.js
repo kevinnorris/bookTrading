@@ -10,13 +10,13 @@ import * as auth from './auth';
 
 /**
  * Login Saga
- * @param {object} action {type, payload: {username, password}}
+ * @param {object} action {type, payload: {email, password}}
  */
 export function* login(action) {
   // A LOGOUT_USER may happen during as the user is being authenticated, leading to a race condition
   // race returns the winner, the one that finishes first
   const winner = yield race({
-    auth: call(auth.login, action.payload.username, action.payload.password),
+    auth: call(auth.login, action.payload.email, action.payload.password),
     logout: take(LOGOUT_USER),
   });
 

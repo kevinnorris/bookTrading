@@ -16,31 +16,31 @@ module.exports = (passport) => {
   // use LocalStragegy
   // Using named strategies, one for login and one for signup
   passport.use('local-signup', new LocalStrategy({
+    usernameField: 'email',
     passReqToCallback: true,
   },
-  (req, username, password, done) => {
+  (req, email, password, done) => {
     // asynchronous
     // User.findOne wont fire unless data is sent back
     process.nextTick(() => {
     // If email already used by a user
-      User.findOne({ username: username }, (err, user) => {
+      User.findOne({ email: email }, (err, user) => {
         if (err) {
           return done(null, false, { message: err.message, status: 500 });
         }
-        // Can't have two users with same username
+        // Can't have two users with same meail
         if (user) {
-          return done(null, false, { message: 'Username already in use.', status: 400 });
+          return done(null, false, { message: 'Email already in use.', status: 400 });
         }
-        // if new username, create new user
+        // if new email, create new user
         const newUser = new User();
 
-        newUser.username = username;
         newUser.email = req.body.email;
         newUser.password = newUser.generateHash(password);
         newUser.name = req.body.name;
         newUser.city = req.body.city;
-        newUser.state = req.body.state;
         newUser.country = req.body.country;
+        newUser.zip = req.body.zip;
         newUser.points = 0;
 
         newUser.save((e) => {
@@ -51,10 +51,12 @@ module.exports = (passport) => {
     });
   }));
 
-  passport.use('local-login', new LocalStrategy(
-  (username, password, done) => {
+  passport.use('local-login', new LocalStrategy({
+    usernameField: 'email',
+  },
+  (email, password, done) => {
     process.nextTick(() => {
-      User.findOne({ username: username }, (err, user) => {
+      User.findOne({ email: email }, (err, user) => {
         if (err) return done(err);
 
         if (!user) {

@@ -35,7 +35,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
   }
 
   state = {
-    username: '',
+    email: '',
     password: '',
   }
 
@@ -51,7 +51,7 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
 
   handelSubmit = (e) => {
     e.preventDefault();
-    this.props.login({ username: this.state.username, password: this.state.password });
+    this.props.login({ email: this.state.email, password: this.state.password });
   }
 
   render() {
@@ -61,11 +61,11 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
           <LoginInput
             className="LoginCard-input"
             bsSize="sm"
-            name="username"
+            name="email"
             type="text"
-            placeholder="username"
-            value={this.state.username}
-            onChange={this.handelInputChange('username')}
+            placeholder="Email Address"
+            value={this.state.email}
+            onChange={this.handelInputChange('email')}
           />
           <LoginInput
             className="LoginCard-input"

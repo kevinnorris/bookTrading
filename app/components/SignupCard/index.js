@@ -9,10 +9,10 @@ import ServerError from 'components/ServerError';
 import { restrictedPasswords } from 'utils/constants';
 
 const fieldValidations = [
-  val.ruleRunner('username', 'User Name', val.required, val.cantContain([' '])),
-  val.ruleRunner('email', 'Email', val.mustContain('@')),
+  val.ruleRunner('email', 'Email', val.required, val.mustContain('@')),
+  val.ruleRunner('name', 'Name', val.required),
   val.ruleRunner('password1', 'Password', val.required, val.minLength(6),
-                val.cantContain(restrictedPasswords, ['email', 'username'])),
+                val.cantContain(restrictedPasswords, ['email', 'name'])),
   val.ruleRunner('password2', 'Password Confirmation', val.mustMatch('password1', 'Password')),
 ];
 
@@ -31,14 +31,14 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
   }
 
   state = {
-    username: '',
     email: '',
+    name: '',
     password1: '',
     password2: '',
     showErrors: false,
     validationErrors: {
-      username: '',
       email: '',
+      name: '',
       password1: '',
       password2: '',
     },
@@ -71,7 +71,7 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
     // Check if validationErrors is empty
     if (Object.getOwnPropertyNames(this.state.validationErrors).length === 0) {
       // send to server
-      this.props.signup({ username: this.state.username, email: this.state.email, password: this.state.password1 });
+      this.props.signup({ email: this.state.email, name: this.state.name, password: this.state.password1 });
     }
   }
 
@@ -81,16 +81,6 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
         <Title className="SignupCard-title">Signup</Title>
         <form className={'text-left'} onSubmit={this.handelSubmit}>
           <TextField
-            name="username"
-            label="User Name *"
-            placeHolder="User Name"
-            showError={this.state.showErrors}
-            text={this.state.username}
-            isPassword={false}
-            onFieldChange={this.handelInputChange('username')}
-            errorText={this.errorFor('username')}
-          />
-          <TextField
             name="email"
             label="Email Address"
             placeHolder="Email address"
@@ -99,6 +89,16 @@ class SignupCard extends React.PureComponent { // eslint-disable-line react/pref
             isPassword={false}
             onFieldChange={this.handelInputChange('email')}
             errorText={this.errorFor('email')}
+          />
+          <TextField
+            name="name"
+            label="Name"
+            placeHolder="Name"
+            showError={this.state.showErrors}
+            text={this.state.name}
+            isPassword={false}
+            onFieldChange={this.handelInputChange('name')}
+            errorText={this.errorFor('name')}
           />
           <TextField
             name="password1"
