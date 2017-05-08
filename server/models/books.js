@@ -15,6 +15,8 @@ const Books = new mongoose.Schema({
     thumbnail: String,
     previewLink: String,
   },
+  isOwner: Boolean,
+  hasRequested: Boolean,
 });
 
 module.exports = mongoose.model('Books', Books);

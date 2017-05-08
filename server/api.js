@@ -1,4 +1,5 @@
 /* eslint prefer-arrow-callback: 0*/
+/* eslint no-underscore-dangle: 0*/
 const express = require('express');
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
@@ -10,7 +11,7 @@ const Request = require('./models/requests');
 const searchUrl = (searchTerms, startIndex = 0) => (
   `https://www.googleapis.com/books/v1/volumes?q=${searchTerms}&startIndex=${startIndex}&fields=items(id%2CvolumeInfo(authors%2CaverageRating%2Ccategories%2Cdescription%2CimageLinks%2Fthumbnail%2Clanguage%2CpageCount%2CpreviewLink%2CratingsCount%2Ctitle))&key=${process.env.GOOGLE_BOOKS_API_KEY}`
 );
-
+const BooksPerPage = 12;
 const formatData = (data) => (
   data.items.map((item) => (
     {
@@ -43,19 +44,87 @@ function tokenVerify(req, res, next) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         res.json({ success: false, error: err.message });
+      } else if (decoded.sub === userId) {
+        // if all is well, save to request for use in other routes
+        req.decoded = decoded;
+        next();
       } else {
-        if (decoded.sub === userId) {
-          // if all is well, save to request for use in other routes
-          req.decoded = decoded;
-          return next();
-        }
-        return res.json({ success: false, error: 'Failed to authenticate token.' });
+        res.json({ success: false, error: 'Failed to authenticate token.' });
       }
     });
   } else {
     // no token
     res.status(403).json({ success: false, error: 'No token and/or userId provided.' });
   }
+}
+
+/**
+ * Retrieves a page of books based on parameters, or returns an error
+ * Returns an object to callback with (success: boolean) and either (error: message) or (books: [{book},{book}]), numpages: number)
+ * @param {Number} booksPerPage
+ * @param {Object} filterBy mongoose query
+ * @param {Object} sortBy mongoose query
+ * @param {Number} activePage
+ * @param {Function} callback
+ */
+function getBooks(res, booksPerPage, filterBy, sortBy, activePage, callback) {
+  Book.count(filterBy, (e, count) => {
+    if (e) {
+      callback({ success: false, message: e.message });
+    }
+    const numPages = Math.ceil(count / booksPerPage);
+
+    // Get page worth of books
+    if (activePage) {
+      Book.find().where(filterBy).sort(sortBy).limit(booksPerPage)
+      .skip(booksPerPage * (activePage - 1))
+        .exec((err, books) => {
+          if (err) {
+            callback({ success: false, message: err.message });
+          } else {
+            callback({ success: true, books, numPages });
+          }
+        });
+    } else {
+      Book.find().where(filterBy).sort(sortBy).limit(booksPerPage)
+        .exec((err, books) => {
+          if (err) {
+            callback({ success: false, message: err.message });
+          } else {
+            callback({ success: true, books, numPages });
+          }
+        });
+    }
+  });
+}
+
+/**
+ * Add hasRequested and isOwner properties to array of books
+ * Returns object with succes, and either error or books
+ * @param {array} books
+ * @param {String} userId
+ * @param {Function} callback
+ */
+function postProcessBooks(books, numPages, userId, callback) {
+  Request.find({ requestingUser: userId }, (err, requests) => {
+    if (err) {
+      callback({ success: false, error: err.message });
+    } else {
+      const booksRequested = requests.map((request) => request.bookId);
+
+      for (let i = 0; i < books.length; i += 1) {
+        if (books[i].owner === userId) {
+          console.log(`owner = userId for ${books[i].googleData.title}`);
+          books[i].isOwner = true;
+          console.log(books[i].isOwner);
+        } else if (booksRequested.includes(books[i]._id)) {
+          books[i].hasRequested = true;
+        }
+      }
+
+      callback({ success: true, books, numPages });
+    }
+  });
 }
 
 /*
@@ -87,46 +156,45 @@ apiRoutes.get('/search', tokenVerify, (req, res) => {
   }
 });
 
-apiRoutes.get('/books', tokenVerify, (req, res) => {
+apiRoutes.get('/myBooks', tokenVerify, (req, res) => {
   // Books per page
-  let booksPerPage = 12;
+  let booksPerPage = BooksPerPage;
   if (req.query.booksPerPage) {
     booksPerPage = req.query.booksPerPage;
   }
+  // Define filters
+  const filterBy = { owner: req.query.userId };
+  const sortBy = { 'googleData.title': 1 };
 
-  let filterBy = {};
-  if (req.query.myBooks) {
-    filterBy = { owner: req.query.userId };
+  getBooks(res, booksPerPage, filterBy, sortBy, req.query.activePage ? req.query.activePage : 0, (response) => {
+    res.json(response);
+  });
+});
+
+// Does not require authentication
+apiRoutes.get('/allBooks', (req, res) => {
+  // Books per page
+  let booksPerPage = BooksPerPage;
+  if (req.query.booksPerPage) {
+    booksPerPage = req.query.booksPerPage;
   }
-  // Get number of books
-  Book.count(filterBy, (e, count) => {
-    if (e) {
-      return res.json({ success: false, message: e.message });
-    }
+  // Define filters
+  const sortBy = { 'googleData.title': 1 };
 
-    const numPages = Math.ceil(count / booksPerPage);
-    const sortBy = { 'googleData.title': 1 };
-
-    // Get page worth of books
-    if (req.query.activePage) {
-      Book.find().where(filterBy).sort(sortBy).limit(booksPerPage)
-      .skip(booksPerPage * (req.query.activePage - 1))
-        .exec((err, books) => {
-          if (err) {
-            res.json({ success: false, message: err.message });
-          } else {
-            res.json({ success: true, books, numPages });
-          }
-        });
+  getBooks(res, booksPerPage, {}, sortBy, req.query.activePage ? req.query.activePage : 0, (response) => {
+    // If an error occured or the user is not authenticated
+    console.log(req.query);
+    if (!response.success || !req.query.userId || !req.query.token) {
+      res.json(response);
     } else {
-      Book.find().where(filterBy).sort(sortBy).limit(booksPerPage)
-        .exec((err, books) => {
-          if (err) {
-            res.json({ success: false, message: err.message });
-          } else {
-            res.json({ success: true, books, numPages });
-          }
+      // verify the credentials
+      tokenVerify(req, res, () => {
+        console.log('token verified');
+        // Post proccess books to include isOwner and hasRequested
+        postProcessBooks(response.books, response.numPages, req.query.userId, (resp) => {
+          res.json(resp);
         });
+      });
     }
   });
 });
@@ -138,6 +206,8 @@ apiRoutes.post('/addBook', tokenVerify, (req, res) => {
 
     newBook.owner = req.body.userId;
     newBook.googleData = req.body.googleData;
+    newBook.isOwner = false;
+    newBook.hasRequested = false;
     newBook.requests = [];
 
     newBook.save((e) => {
@@ -163,11 +233,12 @@ apiRoutes.post('/removeBook', tokenVerify, (req, res) => {
 });
 
 apiRoutes.post('/requestBook', tokenVerify, (req, res) => {
-  if (req.body.bookId) {
+  if (req.body.bookId && req.body.bookOwner) {
     const newReq = new Request();
 
     newReq.requestingUser = req.body.userId;
     newReq.requestDate = Date.now();
+    newReq.bookOwner = req.body.bookOwner;
     newReq.bookId = req.body.bookId;
     newReq.accepted = false;
 
@@ -176,7 +247,7 @@ apiRoutes.post('/requestBook', tokenVerify, (req, res) => {
       res.json({ success: true });
     });
   } else {
-    res.json({ success: false, error: 'Book id not provided.' });
+    res.json({ success: false, error: 'Book id or owner not provided.' });
   }
 });
 
@@ -194,6 +265,38 @@ apiRoutes.post('/removeRequest', tokenVerify, (req, res) => {
   }
 });
 
+// TODO: Test
+apiRoutes.post('/requests', tokenVerify, (req, res) => {
+  // Get all requests where user is the book owner or the book owner has accepted the users request
+  Request.find({ $or: [{ bookOwner: req.body.userId }, { requestingUser: req.body.userId, accepted: true }] }, (error, requests) => {
+    if (error) {
+      res.json({ success: false, error: error.message });
+    } else {
+      // Connect requests with user info, {name, country, city} if not accepted, {name, country, city, email} if accepted
+      const otherUsers = requests.map((request) => (
+        request.bookOwner === req.body.userId ? request.requestingUser : request.bookOwner
+      ));
+      User.find({ _id: { $in: otherUsers } }, '_id name country city email', (err, users) => {
+        if (err) {
+          res.json({ success: false, error: err.message });
+        } else {
+          // Combine requests with relevant user data
+          let other;
+          const returnData = requests.map((r) => {
+            other = r.bookOwner === req.body.userId ? r.requestingUser : r.bookOwner;
+            const concatRequest = Object.assign({}, r, users.find((u) => u._id === other));
+            // email is only available if request has been accepted
+            if (!r.accepted) {
+              concatRequest.email = undefined;
+            }
+            return concatRequest;
+          });
+          res.json({ success: true, requests: returnData });
+        }
+      });
+    }
+  });
+});
 
 // Debugging routes
 apiRoutes.get('/users', (req, res) => {
@@ -216,12 +319,34 @@ apiRoutes.get('/deleteUsers', (req, res) => {
   });
 });
 
-apiRoutes.get('/allBooks', (req, res) => {
-  Book.find({}, (err, books) => {
+apiRoutes.get('/deleteBooks', (req, res) => {
+  Book.remove({}, (err) => {
     if (err) {
       res.json({ success: false, error: err.message });
     } else {
-      res.json({ success: true, books });
+      res.json({ success: true });
+    }
+  });
+});
+
+apiRoutes.get('/deleteAll', (req, res) => {
+  User.remove({}, (err) => {
+    if (err) {
+      res.json({ success: false, error: err.message });
+    } else {
+      Book.remove({}, (error) => {
+        if (error) {
+          res.json({ success: false, error: error.message });
+        } else {
+          Request.remove({}, (e) => {
+            if (e) {
+              res.json({ success: false, error: e.message });
+            } else {
+              res.json({ success: true });
+            }
+          });
+        }
+      });
     }
   });
 });

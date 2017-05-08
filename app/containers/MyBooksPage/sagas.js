@@ -13,7 +13,7 @@ export function* myBooksSaga(action) {
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
   const activePage = action.payload.activePage ? action.payload.activePage : 0;
-  const requestUrl = `${appUrl}/api/books?myBooks=true&&token=${token}&&userId=${userId}&&activePage=${activePage}`;
+  const requestUrl = `${appUrl}/api/myBooks?token=${token}&&userId=${userId}&&activePage=${activePage}`;
   try {
     const response = yield call(request, requestUrl);
     if (response.success) {
