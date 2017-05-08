@@ -19,7 +19,7 @@ function NavBox() {
     <Wrapper>
       <Title>New Here?</Title>
       <LinkButton to="/signup">Create An Account</LinkButton>
-      <LinkButton to="/brows">Browse Books</LinkButton>
+      <LinkButton to="/browse">Browse Books</LinkButton>
     </Wrapper>
   );
 }
