@@ -43,10 +43,10 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
               <StepBox num={2} icon={'envelope'} text={'Receive requests for your books'} />
             </Col>
             <Col sm={4} md={3}>
-              <StepBox num={3} icon={'send'} text={'Send your books and receive points'} />
+              <StepBox num={3} icon={'send'} text={'Send your books to others'} />
             </Col>
             <Col sm={4} smOffset={4} md={3} mdOffset={0}>
-              <StepBox num={4} icon={'pencil'} text={'Request books with your points'} />
+              <StepBox num={4} icon={'pencil'} text={'Request books from others'} />
             </Col>
           </Row>
           <NavBox />

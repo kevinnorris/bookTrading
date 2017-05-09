@@ -23,10 +23,8 @@ if (cookie) {
     userId: cookie.userId,
     userData: {
       email: cookie.user.email,
-      points: cookie.user.points,
       name: cookie.user.name,
       city: cookie.user.city,
-      state: cookie.user.state,
       country: cookie.user.country,
       zip: cookie.user.zip,
     },
@@ -40,10 +38,8 @@ if (cookie) {
     userId: false,
     userData: {
       email: false,
-      points: false,
       name: false,
       city: false,
-      state: false,
       country: false,
       zip: false,
     },
@@ -58,10 +54,8 @@ function appReducer(state = initialState, action) {
         .set('authenticating', true)
         .set('error', false)
         .setIn(['userData', 'email'], false)
-        .setIn(['userData', 'points'], false)
         .setIn(['userData', 'name'], false)
         .setIn(['userData', 'city'], false)
-        .setIn(['userData', 'state'], false)
         .setIn(['userData', 'country'], false)
         .setIn(['userData', 'zip'], false);
     case AUTHENTICATE_USER_SUCCESS:
@@ -70,10 +64,8 @@ function appReducer(state = initialState, action) {
         .set('token', action.payload.token)
         .set('userId', action.payload.userId)
         .setIn(['userData', 'email'], action.payload.user.email)
-        .setIn(['userData', 'points'], action.payload.user.points)
         .setIn(['userData', 'name'], action.payload.user.name)
         .setIn(['userData', 'city'], action.payload.user.city)
-        .setIn(['userData', 'state'], action.payload.user.state)
         .setIn(['userData', 'country'], action.payload.user.country)
         .setIn(['userData', 'zip'], action.payload.user.zip);
     case AUTHENTICATE_USER_ERROR:
@@ -84,10 +76,8 @@ function appReducer(state = initialState, action) {
       return state
         .set('token', false)
         .setIn(['userData', 'email'], false)
-        .setIn(['userData', 'points'], false)
         .setIn(['userData', 'name'], false)
         .setIn(['userData', 'city'], false)
-        .setIn(['userData', 'state'], false)
         .setIn(['userData', 'country'], false)
         .setIn(['userData', 'zip'], false);
     case SELECT_BOOK:
