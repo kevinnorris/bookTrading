@@ -111,13 +111,11 @@ function postProcessBooks(books, numPages, userId, callback) {
       callback({ success: false, error: err.message });
     } else {
       const booksRequested = requests.map((request) => request.bookId);
-
       for (let i = 0; i < books.length; i += 1) {
         if (books[i].owner === userId) {
-          console.log(`owner = userId for ${books[i].googleData.title}`);
           books[i].isOwner = true;
-          console.log(books[i].isOwner);
-        } else if (booksRequested.includes(books[i]._id)) {
+          // books[i]._id is an object and request.bookId is a string
+        } else if (booksRequested.includes(books[i]._id.toString())) {
           books[i].hasRequested = true;
         }
       }
@@ -183,13 +181,11 @@ apiRoutes.get('/allBooks', (req, res) => {
 
   getBooks(res, booksPerPage, {}, sortBy, req.query.activePage ? req.query.activePage : 0, (response) => {
     // If an error occured or the user is not authenticated
-    console.log(req.query);
     if (!response.success || !req.query.userId || !req.query.token) {
       res.json(response);
     } else {
       // verify the credentials
       tokenVerify(req, res, () => {
-        console.log('token verified');
         // Post proccess books to include isOwner and hasRequested
         postProcessBooks(response.books, response.numPages, req.query.userId, (resp) => {
           res.json(resp);
@@ -357,6 +353,16 @@ apiRoutes.get('/requests', (req, res) => {
       res.json({ success: false, error: err.message });
     } else {
       res.json({ success: true, requests });
+    }
+  });
+});
+
+apiRoutes.get('/deleteRequests', (req, res) => {
+  Request.remove({}, (err) => {
+    if (err) {
+      res.json({ success: false, error: err.message });
+    } else {
+      res.json({ success: true });
     }
   });
 });
