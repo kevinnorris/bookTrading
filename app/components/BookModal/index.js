@@ -94,9 +94,9 @@ BookModal.propTypes = {
     React.PropTypes.object,
   ]).isRequired,
   hasButton: React.PropTypes.bool.isRequired,
-  buttonText: React.PropTypes.string.isRequired,
-  buttonAction: React.PropTypes.func.isRequired,
-  ButtonType: React.PropTypes.func.isRequired,
+  buttonText: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool]).isRequired,
+  buttonAction: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool]).isRequired,
+  ButtonType: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.bool]).isRequired,
 };
 
 export default BookModal;

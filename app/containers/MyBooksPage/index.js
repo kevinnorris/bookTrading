@@ -83,6 +83,7 @@ export class MyBooksPage extends React.PureComponent { // eslint-disable-line re
           buttonAction={this.removeBook(currentBook._id)}
           ButtonType={DeleteButton}
           loading={this.props.fetching}
+          hasButton
         />
       </div>
     );

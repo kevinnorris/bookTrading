@@ -72,6 +72,7 @@ export class AddBookPage extends React.PureComponent { // eslint-disable-line re
           buttonAction={this.addBook(currentBook)}
           ButtonType={ActionButton}
           loading={this.props.searching}
+          hasButton
         />
       </div>
     );
