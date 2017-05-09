@@ -11,7 +11,33 @@ const GridCard = styled(Card)`
 `;
 
 function BookGrid({ books, select, loading }) {
-  const Books = books.map((book, index) => (<Book imgUrl={book.thumbnail} title={book.title} index={index} select={select} key={index} />));
+  const Books = books.map((book, index) => {
+    // For books from our server
+    if (book.googleData) {
+      return (
+        <Book
+          imgUrl={book.googleData.thumbnail}
+          title={book.googleData.title}
+          isOwner={book.isOwner}
+          hasRequested={book.hasRequested}
+          index={index}
+          select={select}
+          key={index}
+        />
+      );
+    }
+    // For books from google search
+    return (
+      <Book
+        imgUrl={book.thumbnail}
+        title={book.title}
+        index={index}
+        select={select}
+        key={index}
+      />
+    );
+  }
+  );
   return (
     <GridCard>
       {loading ? <Loader /> : null}
