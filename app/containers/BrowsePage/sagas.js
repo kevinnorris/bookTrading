@@ -5,11 +5,11 @@ import request from 'utils/request';
 import { appUrl } from 'utils/constants';
 import { makeSelectToken, makeSelectUserId } from 'containers/App/selectors';
 import { unselectBook } from 'containers/App/actions';
+import { removeBookWatcher } from 'containers/MyBooksPage/sagas';
 import { ALL_BOOKS_REQUEST, REQUEST_BOOK } from './constants';
 import { allBooksSuccess, allBooksError, requestBookSuccess, requestBookError } from './actions';
 
 export function* allBooksSaga(action) {
-  console.log('all books saga happening');
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
   const activePage = action.payload.activePage ? action.payload.activePage : 0;
@@ -70,4 +70,5 @@ export function* requestBookWatcher() {
 export default [
   allBooksWatcher,
   requestBookWatcher,
+  removeBookWatcher,
 ];
