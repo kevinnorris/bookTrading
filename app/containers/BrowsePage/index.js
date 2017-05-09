@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -47,9 +48,16 @@ export class BrowsePage extends React.PureComponent { // eslint-disable-line rea
     }
   )
 
+  requestBook = (bookId, bookOwner) => (
+    () => {
+      this.props.requestBook({ bookId, bookOwner });
+    }
+  )
+
   removeRequest = (requestId) => (
     () => {
       // TODO: Import remove request from RequestPage actions
+      // May need to be based on bookId
     }
   )
 
@@ -57,26 +65,30 @@ export class BrowsePage extends React.PureComponent { // eslint-disable-line rea
     let books = [];
     let currentBook = false;
     if (this.props.books) {
-      books = this.props.books.map((book) => book.googleData);
+      // Books were converted to immutable in reducer, must be converted back for use by react
+      books = this.props.books.toJS();
     }
     if (Number.isInteger(this.props.activeBook) && this.props.books) {
-      currentBook = this.props.books[this.props.activeBook];
-      console.log(currentBook);
+      currentBook = books[this.props.activeBook];
     }
     // TODO: Test request book button and saga
 
     // Book modal variables
-    let btnText = 'Request Book';
-    let btnType = ActionButton;
-    let btnAction = this.props.requestBook;
+    let btnText = false;
+    let btnType = false;
+    let btnAction = false;
     if (currentBook.isOwner) {
       btnText = 'Delete Book';
       btnType = DeleteButton;
-      btnAction = this.removeBook;
+      btnAction = this.removeBook(currentBook._id);
     } else if (currentBook.hasRequested) {
       btnText = 'Remove Request';
       btnType = DeleteButton;
       btnAction = this.removeRequest;
+    } else if (currentBook) {
+      btnText = 'Request Book';
+      btnType = ActionButton;
+      btnAction = this.requestBook(currentBook._id, currentBook.owner);
     }
     return (
       <div>
@@ -99,7 +111,6 @@ export class BrowsePage extends React.PureComponent { // eslint-disable-line rea
             loading={this.props.fetching}
           />
         </div>
-        {/*Request, RemoveRequest, Delete button, based on isOwner and hasRequested*/}
         <BookModal
           show={Number.isInteger(this.props.activeBook)}
           onHide={this.unselectBook}
@@ -119,7 +130,7 @@ BrowsePage.propTypes = {
   location: PropTypes.object,
   fetching: PropTypes.bool.isRequired,
   error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired,
-  books: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]).isRequired,
+  books: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
   numPages: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   activePage: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   activeBook: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
@@ -147,7 +158,7 @@ function mapDispatchToProps(dispatch) {
     requestBook: (payload) => dispatch(requestBook(payload)),
     selectBook: (payload) => dispatch(selectBook(payload)),
     unselectBook: () => dispatch(unselectBook()),
-    removeBook : (payload) => dispatch(removeBook(payload)),
+    removeBook: (payload) => dispatch(removeBook(payload)),
   };
 }
 

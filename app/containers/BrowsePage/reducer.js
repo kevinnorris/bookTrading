@@ -1,5 +1,10 @@
 import { fromJS } from 'immutable';
 import {
+  REMOVE_BOOK_REQUEST,
+  REMOVE_BOOK_SUCCESS,
+  REMOVE_BOOK_ERROR,
+} from 'containers/MyBooksPage/constants';
+import {
   ALL_BOOKS_REQUEST,
   ALL_BOOKS_SUCCESS,
   ALL_BOOKS_ERROR,
@@ -26,8 +31,9 @@ function browsePageReducer(state = initialState, action) {
         .set('activePage', action.payload.activePage)
         .set('fetching', true);
     case ALL_BOOKS_SUCCESS:
+      // Books converted to immutable, as other actions will be updating them
       return state
-        .set('books', action.payload.books)
+        .set('books', fromJS(action.payload.books))
         .set('numPages', action.payload.numPages)
         .set('fetching', false);
     case ALL_BOOKS_ERROR:
@@ -39,11 +45,23 @@ function browsePageReducer(state = initialState, action) {
       return state
         .set('error', false);
     case REQUEST_BOOK_SUCCESS:
-      // TODO: test
-      // Should update the hasRequested value of the requested book
       return state
-        .setIn(['books'], state.get('books').findIndex(action.payload.bookId), 'hasRequested', true);
+        .setIn([
+          'books',
+          state.get('books').findIndex((book) => book.get('_id') === action.payload.bookId),
+          'hasRequested',
+        ],
+        true);
     case REQUEST_BOOK_ERROR:
+      return state
+        .set('error', action.payload.error);
+    case REMOVE_BOOK_REQUEST:
+      return state
+        .set('error', false);
+    case REMOVE_BOOK_SUCCESS:
+      return state
+        .set('books', state.get('books').filter((book) => book.get('_id') !== action.payload.bookId));
+    case REMOVE_BOOK_ERROR:
       return state
         .set('error', action.payload.error);
     default:
