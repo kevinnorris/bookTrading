@@ -16,3 +16,6 @@ export const deleteColor = '#9d4040';
 export const deleteHover = '#923c3c';
 
 export const errorColor = '#e50000';
+
+export const ownerColor = '#90C3D4';
+export const requestedColor = '#A1D490';
