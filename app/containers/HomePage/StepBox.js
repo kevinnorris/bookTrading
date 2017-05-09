@@ -7,10 +7,11 @@ const Wrapper = styled.div`
   border-radius: 5px;
   padding: 12.5px;
   text-align: left;
-  margin: 5px 0;
+  margin: 5px auto;
+  max-width: 240px;
 
   @media (max-width: 767px) {
-    margin: 5px 50px;
+    margin: 5px auto;
   }
 `;
 
@@ -22,6 +23,7 @@ const Number = styled.h2`
 const Description = styled.p`
   padding-left: 10px;
   font-size: 1.8rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   text-align: center;
 `;
 
