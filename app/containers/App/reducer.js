@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-import { loggedIn } from './auth';
+import { loggedIn, updateUser } from './auth';
 
 import {
   AUTHENTICATE_USER,
@@ -9,6 +9,9 @@ import {
   LOGOUT_USER,
   SELECT_BOOK,
   UNSELECT_BOOK,
+  UPDATE_SETTINGS_REQUEST,
+  UPDATE_SETTINGS_SUCCESS,
+  UPDATE_SETTINGS_ERROR,
 } from './constants';
 
 // The initial state of the App, If a cookie is available initialize state with its data
@@ -17,6 +20,7 @@ let initialState;
 if (cookie) {
   initialState = fromJS({
     authenticating: false,
+    fetching: false,
     error: false,
     token: cookie.token,
     expireDate: new Date(cookie.expireDate),
@@ -33,6 +37,7 @@ if (cookie) {
 } else {
   initialState = fromJS({
     authenticating: false,
+    fetching: false,
     error: false,
     token: false,
     userId: false,
@@ -86,6 +91,34 @@ function appReducer(state = initialState, action) {
     case UNSELECT_BOOK:
       return state
         .set('activeBook', false);
+    case UPDATE_SETTINGS_REQUEST:
+      return state
+        .set('error', false)
+        .set('fetching', true);
+    case UPDATE_SETTINGS_SUCCESS: {
+      // update the cookie with new user info
+      updateUser(action.payload.name, action.payload.city, action.payload.country, action.payload.zip);
+
+      let updatedState = state
+        .set('fetching', false);
+      if (action.payload.name) {
+        updatedState = updatedState.setIn(['userData', 'name'], action.payload.name);
+      }
+      if (action.payload.city) {
+        updatedState = updatedState.setIn(['userData', 'city'], action.payload.city);
+      }
+      if (action.payload.country) {
+        updatedState = updatedState.setIn(['userData', 'country'], action.payload.country);
+      }
+      if (action.payload.zip) {
+        updatedState = updatedState.setIn(['userData', 'zip'], action.payload.zip);
+      }
+      return updatedState;
+    }
+    case UPDATE_SETTINGS_ERROR:
+      return state
+        .set('error', action.payload.error)
+        .set('fetching', false);
     default:
       return state;
   }

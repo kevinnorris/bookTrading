@@ -1,15 +1,11 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
-import styled from 'styled-components';
 
 import ActionButton from 'components/ActionButton';
 import CenterCard from 'components/CenterCard';
 import Title from 'components/Title';
 import ServerError from 'components/ServerError';
-
-const MarginFormControl = styled(FormControl)`
-  margin-bottom: 15px;
-`;
+import MarginFormControl from 'components/MarginFormControl';
 
 export default class LoginCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -46,11 +42,10 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
 
   render() {
     return (
-      <CenterCard className="LoginCard">
-        <Title className="LoginCard-title">Login</Title>
+      <CenterCard>
+        <Title>Login</Title>
         <form onSubmit={this.handelSubmit}>
           <MarginFormControl
-            className="LoginCard-input"
             name="email"
             type="text"
             placeholder="email"
@@ -58,7 +53,6 @@ export default class LoginCard extends React.PureComponent { // eslint-disable-l
             onChange={this.handelInputChange('email')}
           />
           <FormControl
-            className="LoginCard-input"
             name="password"
             type="password"
             placeholder="Password"

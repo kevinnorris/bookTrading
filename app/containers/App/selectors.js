@@ -7,6 +7,11 @@ const makeSelectAuthenticating = () => createSelector(
   (globalState) => globalState.get('authenticating')
 );
 
+const makeSelectFetching = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('fetching')
+);
+
 const makeSelectError = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('error')
@@ -58,6 +63,7 @@ const makeSelectLocationState = () => {
 export {
   selectGlobal,
   makeSelectAuthenticating,
+  makeSelectFetching,
   makeSelectError,
   makeSelectToken,
   makeSelectUserId,

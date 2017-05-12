@@ -19,6 +19,23 @@ function saveCookie(token, user, userId, expiresIn) {
 }
 
 /**
+ * Update the user data in the cookie
+ * @param {string} name
+ * @param {string} country
+ * @param {string} city
+ * @param {string} zip
+ */
+export function updateUser(name, country, city, zip) {
+  let cookie = localStorage.getItem(localStorageString);
+  cookie = JSON.parse(cookie);
+  cookie.user.name = name;
+  cookie.user.country = country;
+  cookie.user.city = city;
+  cookie.user.zip = zip;
+  localStorage.setItem(localStorageString, JSON.stringify(cookie));
+}
+
+/**
   * Logs a user in, returning a object with token and user object
   * @param  {string} email The email of the user
   * @param  {string} password The password of the user

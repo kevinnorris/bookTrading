@@ -9,7 +9,6 @@ import { MY_BOOKS_REQUEST, REMOVE_BOOK_REQUEST } from './constants';
 import { myBooksSuccess, myBooksError, removeBookSuccess, removeBookError } from './actions';
 
 export function* myBooksSaga(action) {
-  console.log('my books saga happening');
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
   const activePage = action.payload.activePage ? action.payload.activePage : 0;

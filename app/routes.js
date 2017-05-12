@@ -126,6 +126,24 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/updateSettings',
+      name: 'updateSettings',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/UpdateSettings/sagas'),
+          import('containers/UpdateSettings'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([sagas, component]) => {
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

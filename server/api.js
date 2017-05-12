@@ -294,6 +294,21 @@ apiRoutes.post('/requests', tokenVerify, (req, res) => {
   });
 });
 
+apiRoutes.post('/updateSettings', tokenVerify, (req, res) => {
+  User.update({ _id: req.body.userId }, { $set: {
+    name: req.body.name,
+    country: req.body.country,
+    city: req.body.city,
+    zip: req.body.zip,
+  } }, (err) => {
+    if (err) {
+      res.json({ success: false, error: err.message });
+    } else {
+      res.json({ success: true });
+    }
+  });
+});
+
 // Debugging routes
 apiRoutes.get('/users', (req, res) => {
   User.find({}, (err, users) => {

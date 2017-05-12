@@ -19,3 +19,7 @@ export const LOGOUT_USER = 'bookTrader/App/LOGOUT_USER';
 
 export const SELECT_BOOK = 'bookTrader/App/SELECT_BOOK';
 export const UNSELECT_BOOK = 'bookTrader/App/UNSELECT_BOOK';
+
+export const UPDATE_SETTINGS_REQUEST = 'bookTrader/App/UPDATE_SETTINGS_REQUEST';
+export const UPDATE_SETTINGS_SUCCESS = 'bookTrader/App/UPDATE_SETTINGS_SUCCESS';
+export const UPDATE_SETTINGS_ERROR = 'bookTrader/App/UPDATE_SETTINGS_ERROR';
