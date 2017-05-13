@@ -35,6 +35,7 @@ export class DashboardPage extends React.PureComponent { // eslint-disable-line 
         <Header location={this.props.location.pathname} />
         <div className="container text-center">
           <Title>{this.props.userData.name}</Title>
+          <LinkButton to={'/browse'}>Browse Books</LinkButton>
           <Row>
             <SpacedCol xs={10} xsOffset={1} sm={6} smOffset={0} md={4} mdOffset={2}>
               <Card>
@@ -47,7 +48,7 @@ export class DashboardPage extends React.PureComponent { // eslint-disable-line 
               <Card>
                 <Title>Wishlist</Title>
                 <SubTitle>5 Books Requested</SubTitle>
-                <LinkButton to={'/browse'}>View Wishlist</LinkButton>
+                <LinkButton to={'/wishlist'}>View Wishlist</LinkButton>
               </Card>
             </SpacedCol>
             <SpacedCol xs={10} xsOffset={1} sm={6} smOffset={0} md={4} mdOffset={2}>
