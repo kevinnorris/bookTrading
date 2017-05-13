@@ -144,6 +144,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/wishlist',
+      name: 'wishlistPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/WishlistPage/reducer'),
+          import('containers/WishlistPage/sagas'),
+          import('containers/WishlistPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('wishlistPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
