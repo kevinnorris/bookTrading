@@ -195,6 +195,31 @@ apiRoutes.get('/allBooks', (req, res) => {
   });
 });
 
+apiRoutes.get('/wishlist', tokenVerify, (req, res) => {
+  // Get all requests where the user is the requestor and they have not been accepted
+  Request.find({ requestingUser: req.query.userId, accepted: false }, (err, requests) => {
+    if (err) {
+      res.json({ success: false, error: err.message });
+    } else {
+      // Get all books where the _id is in one of the requests
+      const bookIds = requests.map((r) => r.bookId);
+
+      // Books per page
+      let booksPerPage = BooksPerPage;
+      if (req.query.booksPerPage) {
+        booksPerPage = req.query.booksPerPage;
+      }
+      // Define filters
+      const filterBy = { _id: { $in: bookIds } };
+      const sortBy = { 'googleData.title': 1 };
+
+      getBooks(res, booksPerPage, filterBy, sortBy, req.query.activePage ? req.query.activePage : 0, (response) => {
+        res.json(response);
+      });
+    }
+  });
+});
+
 apiRoutes.post('/addBook', tokenVerify, (req, res) => {
   // Check required info is passed
   if (req.body.googleData) {
@@ -248,16 +273,26 @@ apiRoutes.post('/requestBook', tokenVerify, (req, res) => {
 });
 
 apiRoutes.post('/removeRequest', tokenVerify, (req, res) => {
+  // If a requestId is passed
   if (req.body.requestId) {
     Request.remove({ _id: req.body.requestId }, (err) => {
-      if (!err) {
-        res.json({ success: true });
-      } else {
+      if (err) {
         res.json({ success: false, error: err.message });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  // If a bookId is passed (used for removing own requests via wishlist)
+  } else if (req.body.bookId) {
+    Request.remove({ requestingUser: req.body.userId, bookId: req.body.bookId }, (err) => {
+      if (err) {
+        res.json({ success: false, error: err.message });
+      } else {
+        res.json({ success: true });
       }
     });
   } else {
-    res.json({ success: false, error: 'No request id provided.' });
+    res.json({ success: false, error: 'No request Id or book Id provided.' });
   }
 });
 
