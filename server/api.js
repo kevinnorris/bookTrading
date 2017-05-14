@@ -220,6 +220,44 @@ apiRoutes.get('/wishlist', tokenVerify, (req, res) => {
   });
 });
 
+apiRoutes.get('/userStats', tokenVerify, (req, res) => {
+  Book.count({ owner: req.query.userId }, (err, count) => {
+    if (err) {
+      res.json({ success: false, errror: err.message });
+    } else {
+      Request.find({ $or: [{ requestingUser: req.query.userId }, { bookOwner: req.query.userId }] },
+      'requestingUser bookOwner accepted',
+      (e, requests) => {
+        if (e) {
+          res.json({ success: false, error: e.message });
+        } else {
+          let wishlistCount = 0;
+          let pendingCount = 0;
+          let inProgressCount = 0;
+          for (let i = 0; i < requests.length; i += 1) {
+            if (requests[i].requestingUser === req.query.userId && !requests[i].accepted) {
+              wishlistCount += 1;
+            }
+            if (requests[i].bookOwner === req.query.userId && !requests[i].accepted) {
+              pendingCount += 1;
+            }
+            if (requests[i].accepted) {
+              inProgressCount += 1;
+            }
+          }
+          res.json({
+            success: true,
+            bookCount: count,
+            wishlistCount,
+            pendingCount,
+            inProgressCount,
+          });
+        }
+      });
+    }
+  });
+});
+
 apiRoutes.post('/addBook', tokenVerify, (req, res) => {
   // Check required info is passed
   if (req.body.googleData) {
