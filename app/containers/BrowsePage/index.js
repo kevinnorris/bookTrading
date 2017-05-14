@@ -48,9 +48,9 @@ export class BrowsePage extends React.PureComponent { // eslint-disable-line rea
     }
   )
 
-  requestBook = (bookId, bookOwner) => (
+  requestBook = (bookId, bookOwner, title) => (
     () => {
-      this.props.requestBook({ bookId, bookOwner });
+      this.props.requestBook({ bookId, bookOwner, title });
     }
   )
 
@@ -88,7 +88,7 @@ export class BrowsePage extends React.PureComponent { // eslint-disable-line rea
     } else if (currentBook) {
       btnText = 'Request Book';
       btnType = ActionButton;
-      btnAction = this.requestBook(currentBook._id, currentBook.owner);
+      btnAction = this.requestBook(currentBook._id, currentBook.owner, currentBook.googleData.title);
     }
     return (
       <div>

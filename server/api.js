@@ -302,6 +302,7 @@ apiRoutes.post('/requestBook', tokenVerify, (req, res) => {
     newReq.bookOwner = req.body.bookOwner;
     newReq.bookId = req.body.bookId;
     newReq.accepted = false;
+    newReq.title = req.body.title;
 
     newReq.save((e) => {
       if (e) throw e;

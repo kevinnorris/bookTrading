@@ -43,7 +43,6 @@ export function* addBookSaga(action) {
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
   try {
-    console.log(action.payload);
     const bookAdded = yield call(request, `${appUrl}/api/addBook`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

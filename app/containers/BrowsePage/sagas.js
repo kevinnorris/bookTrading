@@ -46,7 +46,13 @@ export function* requestBookSaga(action) {
     const response = yield call(request, `${appUrl}/api/requestBook`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, userId, bookId: action.payload.bookId, bookOwner: action.payload.bookOwner }),
+      body: JSON.stringify({
+        token,
+        userId,
+        bookId: action.payload.bookId,
+        bookOwner: action.payload.bookOwner,
+        title: action.payload.title,
+      }),
     });
     if (response.success) {
       yield put(unselectBook());  // Closes the modal

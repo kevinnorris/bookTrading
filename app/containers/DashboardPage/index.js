@@ -25,9 +25,7 @@ const SpacedCol = styled(Col)`
 
 export class DashboardPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    if (!Number.isInteger(this.props.userData.bookCount)) {
-      this.props.requestStats();
-    }
+    this.props.requestStats();
   }
 
   render() {

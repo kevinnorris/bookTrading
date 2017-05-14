@@ -6,6 +6,7 @@ const Requests = new mongoose.Schema({
   bookOwner: String,
   bookId: String,
   accepted: Boolean,
+  title: String,
 });
 
 module.exports = mongoose.model('Requests', Requests);
