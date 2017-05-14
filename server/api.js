@@ -247,10 +247,12 @@ apiRoutes.get('/userStats', tokenVerify, (req, res) => {
           }
           res.json({
             success: true,
-            bookCount: count,
-            wishlistCount,
-            pendingCount,
-            inProgressCount,
+            userStats: {
+              bookCount: count,
+              wishlistCount,
+              pendingCount,
+              inProgressCount,
+            },
           });
         }
       });

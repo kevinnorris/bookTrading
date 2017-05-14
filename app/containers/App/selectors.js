@@ -35,6 +35,10 @@ const makeSelectUserData = () => createSelector(
     city: globalState.getIn(['userData', 'city']),
     country: globalState.getIn(['userData', 'country']),
     zip: globalState.getIn(['userData', 'zip']),
+    bookCount: globalState.getIn(['userData', 'bookCount']),
+    wishlistCount: globalState.getIn(['userData', 'wishlistCount']),
+    pendingCount: globalState.getIn(['userData', 'pendingCount']),
+    inProgressCount: globalState.getIn(['userData', 'inProgressCount']),
   })
 );
 

@@ -12,44 +12,43 @@ import {
   UPDATE_SETTINGS_REQUEST,
   UPDATE_SETTINGS_SUCCESS,
   UPDATE_SETTINGS_ERROR,
+  USER_STATS_REQUEST,
+  USER_STATS_SUCCESS,
+  USER_STATS_ERROR,
 } from './constants';
 
-// The initial state of the App, If a cookie is available initialize state with its data
+// The initial state of the App
+let initialState = fromJS({
+  authenticating: false,
+  fetching: false,
+  error: false,
+  token: false,
+  userId: false,
+  userData: {
+    email: false,
+    name: false,
+    city: false,
+    country: false,
+    zip: false,
+    bookCount: false,
+    wishlistCount: false,
+    pendingCount: false,
+    inProgressCount: false,
+  },
+  activeBook: false,
+});
+// If a cookie is available update initial state with its data
 const cookie = loggedIn();
-let initialState;
 if (cookie) {
-  initialState = fromJS({
-    authenticating: false,
-    fetching: false,
-    error: false,
-    token: cookie.token,
-    expireDate: new Date(cookie.expireDate),
-    userId: cookie.userId,
-    userData: {
-      email: cookie.user.email,
-      name: cookie.user.name,
-      city: cookie.user.city,
-      country: cookie.user.country,
-      zip: cookie.user.zip,
-    },
-    activeBook: false,
-  });
-} else {
-  initialState = fromJS({
-    authenticating: false,
-    fetching: false,
-    error: false,
-    token: false,
-    userId: false,
-    userData: {
-      email: false,
-      name: false,
-      city: false,
-      country: false,
-      zip: false,
-    },
-    activeBook: false,
-  });
+  initialState = initialState
+    .set('token', cookie.token)
+    .set('expireDate', new Date(cookie.expireDate))
+    .set('userId', cookie.userId)
+    .setIn(['userData', 'email'], cookie.user.email)
+    .setIn(['userData', 'name'], cookie.user.name)
+    .setIn(['userData', 'city'], cookie.user.city)
+    .setIn(['userData', 'country'], cookie.user.country)
+    .setIn(['userData', 'zip'], cookie.user.zip);
 }
 
 function appReducer(state = initialState, action) {
@@ -116,6 +115,25 @@ function appReducer(state = initialState, action) {
       return updatedState;
     }
     case UPDATE_SETTINGS_ERROR:
+      return state
+        .set('error', action.payload.error)
+        .set('fetching', false);
+    case USER_STATS_REQUEST:
+      return state
+        .set('error', false)
+        .setIn(['userData', 'bookCount'], false)
+        .setIn(['userData', 'wishlistCount'], false)
+        .setIn(['userData', 'pendingCount'], false)
+        .setIn(['userData', 'inProgressCount'], false)
+        .set('fetching', true);
+    case USER_STATS_SUCCESS:
+      return state
+        .setIn(['userData', 'bookCount'], action.payload.bookCount)
+        .setIn(['userData', 'wishlistCount'], action.payload.wishlistCount)
+        .setIn(['userData', 'pendingCount'], action.payload.pendingCount)
+        .setIn(['userData', 'inProgressCount'], action.payload.inProgressCount)
+        .set('fetching', false);
+    case USER_STATS_ERROR:
       return state
         .set('error', action.payload.error)
         .set('fetching', false);

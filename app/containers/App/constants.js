@@ -23,3 +23,7 @@ export const UNSELECT_BOOK = 'bookTrader/App/UNSELECT_BOOK';
 export const UPDATE_SETTINGS_REQUEST = 'bookTrader/App/UPDATE_SETTINGS_REQUEST';
 export const UPDATE_SETTINGS_SUCCESS = 'bookTrader/App/UPDATE_SETTINGS_SUCCESS';
 export const UPDATE_SETTINGS_ERROR = 'bookTrader/App/UPDATE_SETTINGS_ERROR';
+
+export const USER_STATS_REQUEST = 'bookTrader/App/USER_STATS_REQUEST';
+export const USER_STATS_SUCCESS = 'bookTrader/App/USER_STATS_SUCCESS';
+export const USER_STATS_ERROR = 'bookTrader/App/USER_STATS_ERROR';

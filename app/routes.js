@@ -59,9 +59,19 @@ export default function createRoutes(store) {
       path: '/dashboard',
       name: 'dashboardPage',
       getComponent(location, cb) {
-        import('containers/DashboardPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
+        const importModules = Promise.all([
+          import('containers/DashboardPage/sagas'),
+          import('containers/DashboardPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([sagas, component]) => {
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       onEnter: redirectToHome,

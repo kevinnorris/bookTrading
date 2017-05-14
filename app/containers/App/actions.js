@@ -8,6 +8,9 @@ import {
   UPDATE_SETTINGS_REQUEST,
   UPDATE_SETTINGS_SUCCESS,
   UPDATE_SETTINGS_ERROR,
+  USER_STATS_REQUEST,
+  USER_STATS_SUCCESS,
+  USER_STATS_ERROR,
 } from './constants';
 
 export function loginRequest(payload) {
@@ -76,6 +79,26 @@ export function updateSettingsSuccess(payload) {
 export function updateSettingsError(payload) {
   return {
     type: UPDATE_SETTINGS_ERROR,
+    payload,
+  };
+}
+
+export function userStatsRequest() {
+  return {
+    type: USER_STATS_REQUEST,
+  };
+}
+
+export function userStatsSuccess(payload) {
+  return {
+    type: USER_STATS_SUCCESS,
+    payload,
+  };
+}
+
+export function userStatsError(payload) {
+  return {
+    type: USER_STATS_ERROR,
     payload,
   };
 }

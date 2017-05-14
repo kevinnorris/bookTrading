@@ -12,6 +12,7 @@ import SubTitle from 'components/SubTitle';
 import Card from 'components/Card';
 import LinkButton from 'components/LinkButton';
 import { makeSelectUserData } from 'containers/App/selectors';
+import { userStatsRequest } from 'containers/App/actions';
 
 const Notification = styled.p`
   color: ${primaryDarker};
@@ -23,6 +24,12 @@ const SpacedCol = styled(Col)`
 `;
 
 export class DashboardPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentWillMount() {
+    if (!Number.isInteger(this.props.userData.bookCount)) {
+      this.props.requestStats();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -40,22 +47,30 @@ export class DashboardPage extends React.PureComponent { // eslint-disable-line 
             <SpacedCol xs={10} xsOffset={1} sm={6} smOffset={0} md={4} mdOffset={2}>
               <Card>
                 <Title>My Books</Title>
-                <SubTitle>10 Books Added</SubTitle>
+                <SubTitle>
+                  {Number.isInteger(this.props.userData.bookCount) ? this.props.userData.bookCount : '-'} Books Added
+                </SubTitle>
                 <LinkButton to={'/mybooks'}>View My Books</LinkButton>
               </Card>
             </SpacedCol>
             <SpacedCol xs={10} xsOffset={1} sm={6} smOffset={0} md={4} mdOffset={0}>
               <Card>
                 <Title>Wishlist</Title>
-                <SubTitle>5 Books Requested</SubTitle>
+                <SubTitle>
+                  {Number.isInteger(this.props.userData.wishlistCount) ? this.props.userData.wishlistCount : '-'} Books Requested
+                </SubTitle>
                 <LinkButton to={'/wishlist'}>View Wishlist</LinkButton>
               </Card>
             </SpacedCol>
             <SpacedCol xs={10} xsOffset={1} sm={6} smOffset={0} md={4} mdOffset={2}>
               <Card>
                 <Title>Requests</Title>
-                <SubTitle>0 In Progress</SubTitle>
-                <SubTitle>3 Pending</SubTitle>
+                <SubTitle>
+                  {Number.isInteger(this.props.userData.inProgressCount) ? this.props.userData.inProgressCount : '-'} In Progress
+                </SubTitle>
+                <SubTitle>
+                  {Number.isInteger(this.props.userData.pendingCount) ? this.props.userData.pendingCount : '-'} Pending
+                </SubTitle>
                 <LinkButton to={'/requests'}>View Requests</LinkButton>
               </Card>
             </SpacedCol>
@@ -82,6 +97,7 @@ export class DashboardPage extends React.PureComponent { // eslint-disable-line 
 DashboardPage.propTypes = {
   location: PropTypes.object,
   userData: PropTypes.object.isRequired,
+  requestStats: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -90,7 +106,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    requestStats: () => dispatch(userStatsRequest()),
   };
 }
 
