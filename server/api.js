@@ -230,7 +230,7 @@ apiRoutes.get('/requests', tokenVerify, (req, res) => {
       const otherUsers = requests.map((request) => (
         request.bookOwner === req.query.userId ? request.requestingUser : request.bookOwner
       ));
-      User.find({ _id: { $in: otherUsers } }, '_id name country city email', (err, users) => {
+      User.find({ _id: { $in: otherUsers } }, '_id name country city zip email', (err, users) => {
         if (err) {
           res.json({ success: false, error: err.message });
         } else {
