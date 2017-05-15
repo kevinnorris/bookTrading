@@ -44,11 +44,11 @@ export class RequestsPage extends React.PureComponent { // eslint-disable-line r
         <Header location={this.props.location.pathname} />
         <div className="container text-center">
           <Title>In Progress - Donor</Title>
-          <RequestList requests={donorRequests} inProgress />
+          <RequestList requests={donorRequests} inProgress fetching={this.props.fetching} />
           <Title>In Progress - Recipient</Title>
-          <RequestList requests={recipientRequests} inProgress />
+          <RequestList requests={recipientRequests} inProgress fetching={this.props.fetching} />
           <Title>Pending</Title>
-          <RequestList requests={pendingRequests} />
+          <RequestList requests={pendingRequests} fetching={this.props.fetching} />
         </div>
       </div>
     );
