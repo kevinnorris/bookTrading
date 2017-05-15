@@ -1,0 +1,15 @@
+export const GET_REQUESTS_REQUEST = 'app/RequestsPage/GET_REQUESTS_REQUEST';
+export const GET_REQUESTS_SUCCESS = 'app/RequestsPage/GET_REQUESTS_SUCCESS';
+export const GET_REQUESTS_ERROR = 'app/RequestsPage/GET_REQUESTS_ERROR';
+
+export const ACCEPT_REQUEST_REQUEST = 'app/RequestsPage/ACCEPT_REQUEST_REQUEST';
+export const ACCEPT_REQUEST_SUCCESS = 'app/RequestsPage/ACCEPT_REQUEST_SUCCESS';
+export const ACCEPT_REQUEST_ERROR = 'app/RequestsPage/ACCEPT_REQUEST_ERROR';
+
+export const CANCEL_REQUEST_REQUEST = 'app/RequestsPage/CANCEL_REQUEST_REQUEST';
+export const CANCEL_REQUEST_SUCCESS = 'app/RequestsPage/CANCEL_REQUEST_SUCCESS';
+export const CANCEL_REQUEST_ERROR = 'app/RequestsPage/CANCEL_REQUEST_ERROR';
+
+export const COMPLETE_REQUEST_REQUEST = 'app/RequestsPage/COMPLETE_REQUEST_REQUEST';
+export const COMPLETE_REQUEST_SUCCESS = 'app/RequestsPage/COMPLETE_REQUEST_SUCCESS';
+export const COMPLETE_REQUEST_ERROR = 'app/RequestsPage/COMPLETE_REQUEST_ERROR';
