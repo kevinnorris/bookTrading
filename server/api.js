@@ -230,7 +230,7 @@ apiRoutes.get('/requests', tokenVerify, (req, res) => {
       const otherUsers = requests.map((request) => (
         request.bookOwner === req.query.userId ? request.requestingUser : request.bookOwner
       ));
-      User.find({ _id: { $in: otherUsers } }, '_id name country city zip email', (err, users) => {
+      User.find({ _id: { $in: otherUsers } }, '_id email name country city zip', (err, users) => {
         if (err) {
           res.json({ success: false, error: err.message });
         } else {
@@ -243,11 +243,6 @@ apiRoutes.get('/requests', tokenVerify, (req, res) => {
             userData = users.find((u) => u._id.toString() === other.toString());
 
             concatRequest = Object.assign({}, request._doc, { userData });
-
-            // email is only available if request has been accepted
-            if (!concatRequest.accepted) {
-              concatRequest.userData.email = undefined;
-            }
             return concatRequest;
           });
           res.json({ success: true, requests: concatedRequests });
