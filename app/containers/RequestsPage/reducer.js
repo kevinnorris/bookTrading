@@ -68,7 +68,7 @@ function requestsPageReducer(state = initialState, action) {
         .set('error', false);
     case COMPLETE_REQUEST_SUCCESS:
       return state
-        .set('requests', state.get('requests').filter((book) => book.get('_id') !== action.payload.requestId));
+        .set('requests', state.get('requests').filter((request) => request.get('_id') !== action.payload.requestId));
     case COMPLETE_REQUEST_ERROR:
       return state
         .set('error', action.payload.error);

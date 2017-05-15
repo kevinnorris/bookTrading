@@ -16,9 +16,9 @@ export class RequestsPage extends React.PureComponent { // eslint-disable-line r
   }
 
   render() {
-    let pendingRequests = [];
-    let donorRequests = [];
-    let recipientRequests = [];
+    const pendingRequests = [];
+    const donorRequests = [];
+    const recipientRequests = [];
     let jsRequests = [];
     if (this.props.requests) {
       jsRequests = this.props.requests.toJS();
@@ -51,6 +51,7 @@ export class RequestsPage extends React.PureComponent { // eslint-disable-line r
             onClick={this.props.cancelRequest}
             deleteButton
             buttonLabel={'Cancel'}
+            userId={this.props.userId}
           />
           <Title>In Progress - Recipient</Title>
           <RequestList
@@ -59,6 +60,7 @@ export class RequestsPage extends React.PureComponent { // eslint-disable-line r
             fetching={this.props.fetching}
             onClick={this.props.completeRequest}
             buttonLabel={'Complete'}
+            userId={this.props.userId}
           />
           <Title>Pending</Title>
           <RequestList
@@ -66,6 +68,7 @@ export class RequestsPage extends React.PureComponent { // eslint-disable-line r
             fetching={this.props.fetching}
             onClick={this.props.acceptRequest}
             buttonLabel={'Accept'}
+            userId={this.props.userId}
           />
         </div>
       </div>

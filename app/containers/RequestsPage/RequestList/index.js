@@ -4,7 +4,7 @@ import Card from 'components/Card';
 import Loader from 'components/Loader';
 import RequestListItem from './RequestListItem';
 
-function RequestList({ requests, inProgress, fetching, onClick, deleteButton, buttonLabel }) {
+function RequestList({ requests, inProgress, fetching, onClick, deleteButton, buttonLabel, userId }) {
   let requestItems = null;
   if (!fetching) {
     requestItems = requests.map((request, index) => (
@@ -18,7 +18,7 @@ function RequestList({ requests, inProgress, fetching, onClick, deleteButton, bu
         email={request.userData.email}
         accepted={request.accepted}
         key={index}
-        onClick={() => onClick({ requestId: request._id })}
+        onClick={() => onClick({ requestId: request._id, bookId: request.bookId, newOwner: userId })}
         deleteButton={deleteButton}
       />));
   }
@@ -47,6 +47,7 @@ RequestList.propTypes = {
   onClick: React.PropTypes.func,
   deleteButton: React.PropTypes.bool,
   buttonLabel: React.PropTypes.string.isRequired,
+  userId: React.PropTypes.string.isRequired,
 };
 
 export default RequestList;

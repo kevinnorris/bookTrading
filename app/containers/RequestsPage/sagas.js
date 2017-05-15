@@ -54,7 +54,7 @@ export function* acceptRequestSaga(action) {
       body: JSON.stringify({ token, userId, requestId: action.payload.requestId }),
     });
     if (response.success) {
-      yield put(acceptRequestSuccess({ bookId: action.payload.requestId }));
+      yield put(acceptRequestSuccess({ requestId: action.payload.requestId }));
     } else {
       yield put(acceptRequestError({ error: response.error }));
     }
@@ -80,7 +80,7 @@ export function* cancelRequestSaga(action) {
       body: JSON.stringify({ token, userId, requestId: action.payload.requestId }),
     });
     if (response.success) {
-      yield put(completeRequestSuccess({ bookId: action.payload.requestId }));
+      yield put(cancelRequestSuccess({ requestId: action.payload.requestId }));
     } else {
       yield put(cancelRequestError({ error: response.error }));
     }
@@ -103,10 +103,16 @@ export function* completeRequestSaga(action) {
     const response = yield call(request, `${appUrl}/api/completeRequest`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, userId, requestId: action.payload.requestId }),
+      body: JSON.stringify({
+        token,
+        userId,
+        requestId: action.payload.requestId,
+        bookId: action.payload.bookId,
+        newOwner: action.payload.newOwner,
+      }),
     });
     if (response.success) {
-      yield put(cancelRequestSuccess({ bookId: action.payload.requestId }));
+      yield put(completeRequestSuccess({ requestId: action.payload.requestId }));
     } else {
       yield put(completeRequestError({ error: response.error }));
     }
