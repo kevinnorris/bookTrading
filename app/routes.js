@@ -136,6 +136,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToHome,
       path: '/updateSettings',
       name: 'updateSettings',
       getComponent(nextState, cb) {
@@ -154,6 +155,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToHome,
       path: '/wishlist',
       name: 'wishlistPage',
       getComponent(nextState, cb) {
@@ -174,6 +176,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToHome,
       path: '/requests',
       name: 'requestsPage',
       getComponent(nextState, cb) {
