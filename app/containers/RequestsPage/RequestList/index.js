@@ -1,9 +1,10 @@
+/* eslint no-underscore-dangle: 0*/
 import React from 'react';
 import Card from 'components/Card';
 import Loader from 'components/Loader';
 import RequestListItem from './RequestListItem';
 
-function RequestList({ requests, inProgress, fetching }) {
+function RequestList({ requests, inProgress, fetching, onClick, deleteButton, buttonLabel }) {
   let requestItems = null;
   if (!fetching) {
     requestItems = requests.map((request, index) => (
@@ -17,6 +18,8 @@ function RequestList({ requests, inProgress, fetching }) {
         email={request.userData.email}
         accepted={request.accepted}
         key={index}
+        onClick={() => onClick({ requestId: request._id })}
+        deleteButton={deleteButton}
       />));
   }
   return (
@@ -30,6 +33,7 @@ function RequestList({ requests, inProgress, fetching }) {
         accepted={inProgress}
         key={'label'}
         isLabel
+        buttonLabel={buttonLabel}
       />
       {requestItems || <Loader />}
     </Card>
@@ -40,6 +44,9 @@ RequestList.propTypes = {
   requests: React.PropTypes.array.isRequired,
   inProgress: React.PropTypes.bool,
   fetching: React.PropTypes.bool,
+  onClick: React.PropTypes.func,
+  deleteButton: React.PropTypes.bool,
+  buttonLabel: React.PropTypes.string.isRequired,
 };
 
 export default RequestList;

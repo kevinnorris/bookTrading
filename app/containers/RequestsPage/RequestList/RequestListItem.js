@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 
-import { primary } from 'utils/colors';
+import { primary, actionColor, actionHover, deleteColor, deleteHover } from 'utils/colors';
 
 const Wrapper = styled(Row)`
   display: flex;
@@ -23,17 +23,41 @@ const LabelBox = styled(ItemBox)`
 
 const AcceptBtn = styled.button`
   border-radius: 100%;
-  background: green;
+  background: ${actionColor};
   color: white;
   padding: 6px 8px;
+  
+  &:hover, &:active, &:focus{
+    background: ${actionHover};
+    color: white;
+    text-decoration: none;
+  }
 `;
 
 const CancelBtn = styled(AcceptBtn)`
-  background: red;
+  background: ${deleteColor};
+
+  &:hover, &:active, &:focus{
+    background: ${deleteHover};
+  }
 `;
 
-function RequestListItem({ bookTitle, requestDate, name, country, city, zip, email, accepted, isLabel }) {
+function RequestListItem({
+  bookTitle,
+  requestDate,
+  name,
+  country,
+  city,
+  zip,
+  email,
+  accepted,
+  isLabel,
+  onClick,
+  deleteButton,
+  buttonLabel,
+}) {
   const Box = isLabel ? LabelBox : ItemBox;
+  const Button = deleteButton ? CancelBtn : AcceptBtn;
   return (
     <Wrapper>
       <Col xs={2}>
@@ -55,10 +79,10 @@ function RequestListItem({ bookTitle, requestDate, name, country, city, zip, ema
       </Col>
       <Col xs={2}>
         {isLabel ?
-          <Box>Accept</Box> :
-          <AcceptBtn>
+          <Box>{buttonLabel}</Box> :
+          <Button onClick={onClick}>
             <span className={'glyphicon glyphicon-ok'} aria-hidden="true"></span>
-          </AcceptBtn>
+          </Button>
         }
       </Col>
     </Wrapper>
@@ -75,6 +99,9 @@ RequestListItem.propTypes = {
   email: React.PropTypes.string,
   accepted: React.PropTypes.bool,
   isLabel: React.PropTypes.bool,
+  onClick: React.PropTypes.func,
+  deleteButton: React.PropTypes.bool,
+  buttonLabel: React.PropTypes.string,
 };
 
 export default RequestListItem;
