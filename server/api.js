@@ -250,7 +250,7 @@ apiRoutes.get('/requests', tokenVerify, (req, res) => {
             }
             return concatRequest;
           });
-          res.json({ success: true, concatedRequests });
+          res.json({ success: true, requests: concatedRequests });
         }
       });
     }
@@ -387,6 +387,56 @@ apiRoutes.post('/updateSettings', tokenVerify, (req, res) => {
       res.json({ success: true });
     }
   });
+});
+
+apiRoutes.post('/acceptRequest', tokenVerify, (req, res) => {
+  if (req.body.requestId) {
+    Request.update({ _id: req.body.requestId }, { $set: { accepted: true } }, (err) => {
+      if (err) {
+        res.json({ success: false, error: err.message });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  } else {
+    res.json({ success: false, error: 'No request Id provided' });
+  }
+});
+
+apiRoutes.post('/cancelRequest', tokenVerify, (req, res) => {
+  if (req.body.requestId) {
+    Request.update({ _id: req.body.requestId }, { $set: { accepted: false } }, (err) => {
+      if (err) {
+        res.json({ success: false, error: err.message });
+      } else {
+        res.json({ success: true });
+      }
+    });
+  } else {
+    res.json({ success: false, error: 'No request Id provided' });
+  }
+});
+
+apiRoutes.post('/completeRequest', tokenVerify, (req, res) => {
+  if (req.body.requestId && req.body.bookId && req.body.newOwner) {
+    // Transfer the book to the new owner
+    Book.update({ _id: req.body.bookId }, { $set: { owner: req.body.newOwner } }, (error) => {
+      if (error) {
+        res.json({ success: false, error: error.message });
+      } else {
+        // Remove the request that has completed
+        Request.remove({ _id: req.body.requestId }, (err) => {
+          if (err) {
+            res.json({ success: false, error: err.message });
+          } else {
+            res.json({ success: true });
+          }
+        });
+      }
+    });
+  } else {
+    res.json({ success: false, error: 'requestId, bookId or newOwner not provided' });
+  }
 });
 
 // Debugging routes
