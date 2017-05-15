@@ -220,6 +220,43 @@ apiRoutes.get('/wishlist', tokenVerify, (req, res) => {
   });
 });
 
+apiRoutes.get('/requests', tokenVerify, (req, res) => {
+  // Get all requests where user is the book owner or the book owner has accepted the users request
+  Request.find({ $or: [{ bookOwner: req.query.userId }, { requestingUser: req.query.userId, accepted: true }] }, (error, requests) => {
+    if (error) {
+      res.json({ success: false, error: error.message });
+    } else {
+      // Connect requests with user info, {name, country, city} if not accepted, {name, country, city, email} if accepted
+      const otherUsers = requests.map((request) => (
+        request.bookOwner === req.query.userId ? request.requestingUser : request.bookOwner
+      ));
+      User.find({ _id: { $in: otherUsers } }, '_id name country city email', (err, users) => {
+        if (err) {
+          res.json({ success: false, error: err.message });
+        } else {
+          // Combine requests with relevant user data
+          let other;
+          let userData;
+          let concatRequest;
+          const concatedRequests = requests.map((request) => {
+            other = request.bookOwner === req.query.userId ? request.requestingUser : request.bookOwner;
+            userData = users.find((u) => u._id.toString() === other.toString());
+
+            concatRequest = Object.assign({}, request._doc, { userData });
+
+            // email is only available if request has been accepted
+            if (!concatRequest.accepted) {
+              concatRequest.userData.email = undefined;
+            }
+            return concatRequest;
+          });
+          res.json({ success: true, concatedRequests });
+        }
+      });
+    }
+  });
+});
+
 apiRoutes.get('/userStats', tokenVerify, (req, res) => {
   Book.count({ owner: req.query.userId }, (err, count) => {
     if (err) {
@@ -337,39 +374,6 @@ apiRoutes.post('/removeRequest', tokenVerify, (req, res) => {
   }
 });
 
-// TODO: Test
-apiRoutes.post('/requests', tokenVerify, (req, res) => {
-  // Get all requests where user is the book owner or the book owner has accepted the users request
-  Request.find({ $or: [{ bookOwner: req.body.userId }, { requestingUser: req.body.userId, accepted: true }] }, (error, requests) => {
-    if (error) {
-      res.json({ success: false, error: error.message });
-    } else {
-      // Connect requests with user info, {name, country, city} if not accepted, {name, country, city, email} if accepted
-      const otherUsers = requests.map((request) => (
-        request.bookOwner === req.body.userId ? request.requestingUser : request.bookOwner
-      ));
-      User.find({ _id: { $in: otherUsers } }, '_id name country city email', (err, users) => {
-        if (err) {
-          res.json({ success: false, error: err.message });
-        } else {
-          // Combine requests with relevant user data
-          let other;
-          const returnData = requests.map((r) => {
-            other = r.bookOwner === req.body.userId ? r.requestingUser : r.bookOwner;
-            const concatRequest = Object.assign({}, r, users.find((u) => u._id === other));
-            // email is only available if request has been accepted
-            if (!r.accepted) {
-              concatRequest.email = undefined;
-            }
-            return concatRequest;
-          });
-          res.json({ success: true, requests: returnData });
-        }
-      });
-    }
-  });
-});
-
 apiRoutes.post('/updateSettings', tokenVerify, (req, res) => {
   User.update({ _id: req.body.userId }, { $set: {
     name: req.body.name,
@@ -438,15 +442,15 @@ apiRoutes.get('/deleteAll', (req, res) => {
   });
 });
 
-apiRoutes.get('/requests', (req, res) => {
-  Request.find({}, (err, requests) => {
-    if (err) {
-      res.json({ success: false, error: err.message });
-    } else {
-      res.json({ success: true, requests });
-    }
-  });
-});
+// apiRoutes.get('/requests', (req, res) => {
+//   Request.find({}, (err, requests) => {
+//     if (err) {
+//       res.json({ success: false, error: err.message });
+//     } else {
+//       res.json({ success: true, requests });
+//     }
+//   });
+// });
 
 apiRoutes.get('/deleteRequests', (req, res) => {
   Request.remove({}, (err) => {
