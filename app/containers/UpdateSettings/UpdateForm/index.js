@@ -39,7 +39,6 @@ export default class UpdateForm extends React.PureComponent { // eslint-disable-
         ...this.state,
         [field]: e.target.value,
       };
-      console.log(newState);
       this.setState(newState);
     };
   }
