@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0*/
 import { fromJS } from 'immutable';
 import {
   MY_BOOKS_REQUEST,

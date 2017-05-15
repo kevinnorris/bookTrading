@@ -1,9 +1,3 @@
-/**
-*
-* Footer
-*
-*/
-
 import React from 'react';
 
 import A from 'components/A';

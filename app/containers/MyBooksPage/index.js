@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0*/
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';

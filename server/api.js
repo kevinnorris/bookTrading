@@ -435,6 +435,7 @@ apiRoutes.post('/completeRequest', tokenVerify, (req, res) => {
 });
 
 // Debugging routes
+/*
 apiRoutes.get('/users', (req, res) => {
   User.find({}, (err, users) => {
     if (err) {
@@ -487,16 +488,6 @@ apiRoutes.get('/deleteAll', (req, res) => {
   });
 });
 
-// apiRoutes.get('/requests', (req, res) => {
-//   Request.find({}, (err, requests) => {
-//     if (err) {
-//       res.json({ success: false, error: err.message });
-//     } else {
-//       res.json({ success: true, requests });
-//     }
-//   });
-// });
-
 apiRoutes.get('/deleteRequests', (req, res) => {
   Request.remove({}, (err) => {
     if (err) {
@@ -506,5 +497,5 @@ apiRoutes.get('/deleteRequests', (req, res) => {
     }
   });
 });
-
+*/
 module.exports = apiRoutes;

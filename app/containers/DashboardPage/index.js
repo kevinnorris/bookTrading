@@ -48,7 +48,7 @@ export class DashboardPage extends React.PureComponent { // eslint-disable-line 
                 <SubTitle>
                   {Number.isInteger(this.props.userData.bookCount) ? this.props.userData.bookCount : '-'} Books Added
                 </SubTitle>
-                <LinkButton to={'/mybooks'}>View My Books</LinkButton>
+                <LinkButton to={'/mybooks'}>View/Add Books</LinkButton>
               </Card>
             </SpacedCol>
             <SpacedCol xs={10} xsOffset={1} sm={6} smOffset={0} md={4} mdOffset={0}>

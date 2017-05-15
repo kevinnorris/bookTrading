@@ -59,17 +59,12 @@ export function login(email, password) {
   * @param  {string} password The password of the user
   */
 export function signup({ email, password, name, city, state, country }) {
-  console.log(`auth signup called with: ${email} ${password}`);
   return request(`${appUrl}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, name, city, state, country }),
   })
-    .then((response) => {
-      console.log('response from server:');
-      console.log(response);
-      return saveCookie(response.token, response.user, response.userId, response.expiresIn);
-    });
+    .then((response) => saveCookie(response.token, response.user, response.userId, response.expiresIn));
 }
 
 /**

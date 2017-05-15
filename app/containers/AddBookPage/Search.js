@@ -1,8 +1,6 @@
 import React from 'react';
 import { FormGroup, InputGroup, FormControl, Button } from 'react-bootstrap';
 
-// import styled from 'styled-components';
-
 export default class LoginCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     search: React.PropTypes.func.isRequired,

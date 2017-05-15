@@ -1,5 +1,4 @@
 import React from 'react';
-// import styled from 'styled-components';
 import { Pagination } from 'react-bootstrap';
 import BookGrid from 'components/BookGrid';
 
