@@ -26,6 +26,7 @@ const AcceptBtn = styled.button`
   background: ${actionColor};
   color: white;
   padding: 6px 8px;
+  margin: 2px;
   
   &:hover, &:active, &:focus{
     background: ${actionHover};
