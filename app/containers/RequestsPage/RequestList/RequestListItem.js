@@ -72,7 +72,7 @@ function RequestListItem({
       </Col>
       <Col xs={3}>
         {accepted ?
-          <Box><a href={`mailto:${email}`} target="_top">{email}</a></Box> :
+          <Box>{isLabel ? email : <a href={`mailto:${email}`} target="_top">{email}</a>}</Box> :
           <Box>
             {city}{country ? `, ${country}` : ''}{zip ? `, ${zip}` : ''}
           </Box>
