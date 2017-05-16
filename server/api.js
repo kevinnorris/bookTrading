@@ -21,7 +21,9 @@ const formatData = (data) => (
       description: item.volumeInfo.description,
       pageCount: item.volumeInfo.pageCount,
       categories: item.volumeInfo.categories,
-      thumbnail: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'https://books.google.co.nz/googlebooks/images/no_cover_thumb.gif',
+      thumbnail: item.volumeInfo.imageLinks ?
+        item.volumeInfo.imageLinks.thumbnail.replace(/http:\/\//, 'https://') :
+        'https://books.google.co.nz/googlebooks/images/no_cover_thumb.gif',
       language: item.volumeInfo.language,
       previewLink: item.volumeInfo.previewLink,
       averageRating: item.volumeInfo.averageRating,
@@ -315,10 +317,18 @@ apiRoutes.post('/addBook', tokenVerify, (req, res) => {
 apiRoutes.post('/removeBook', tokenVerify, (req, res) => {
   if (req.body.bookId) {
     Book.remove({ _id: req.body.bookId }, (err) => {
-      if (!err) {
-        return res.json({ success: true });
+      if (err) {
+        res.json({ success: false, error: err.message });
+      } else {
+        // Remove all requests associated with this book
+        Request.remove({ bookId: req.body.bookId }, (error) => {
+          if (error) {
+            res.json({ success: false, error: error.message });
+          } else {
+            res.json({ success: true });
+          }
+        });
       }
-      return res.json({ success: false, error: err.message });
     });
   } else {
     res.json({ success: false, error: 'No book id provided.' });
