@@ -12,13 +12,13 @@ import { allBooksSuccess, allBooksError, requestBookSuccess, requestBookError } 
 export function* allBooksSaga(action) {
   const token = yield select(makeSelectToken());
   const userId = yield select(makeSelectUserId());
-  const activePage = action.payload.activePage ? action.payload.activePage : 0;
+  const activePage = action.payload.activePage ? action.payload.activePage : 1;
   // Build request URL based on if user is authenticated
   let requestUrl = `${appUrl}/api/allBooks?`;
   if (token && userId) {
     requestUrl += `token=${token}&&userId=${userId}&&`;
   }
-  requestUrl += `activepage=${activePage}`;
+  requestUrl += `activePage=${activePage}`;
 
   try {
     const response = yield call(request, requestUrl);
