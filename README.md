@@ -1,6 +1,6 @@
 # A Book Trading App
 
-**[Link to app](https://book-trader-.herokuapp.com/)**
+**[Link to app](https://book-trader1.herokuapp.com/)**
 
 Built using [react-boilerplate](https://github.com/react-boilerplate/react-boilerplate) and [mongodb](https://www.mongodb.com/) through [mongoose](http://mongoosejs.com/) for data storage.
 
